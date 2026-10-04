@@ -4,7 +4,8 @@ Pushed at Sean Borycki's request on 2026-10-04 so the transcripts the charter re
 
 | Folder | Contents |
 |---|---|
-| `head/` | The main session (head agent and Sean's messages) up to the snapshot time: `main-session.-home-user.jsonl`, `main-session.jsonl` (the session writes one file per working directory it has used). Includes the two exchanges Sean marked "inquiry, not for record"; he approved pushing them on 4 October |
+| `head/` | The main session (head agent and Sean's messages) up to the snapshot time. `main-session.-home-user.jsonl` is the complete file; `main-session.jsonl` is an earlier partial copy, kept as pushed. Includes the two exchanges Sean marked "inquiry, not for record"; he approved pushing them on 4 October |
+| `conversation.json` | A readable export of the complete main-session file: Sean's messages, Claude's replies (text only), the reviewer's reports and model changes, with the not-for-record items flagged. Reasoning, tool calls and system messages are left out |
 | `reviewer/` | The independent reviewer: one agent resumed across passes 1 to 5, including the pass-3 run stopped by a rate limit |
 | `round2-workflow/wf_740e44a5-0b1/` | The round-2 fix workflow: four fixers and five verifiers (`*.meta.json` names each one), `journal.jsonl` (each agent's returned result) and `workflow_script.js` (the orchestration script) |
 
