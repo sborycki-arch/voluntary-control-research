@@ -69,7 +69,7 @@ The working rubric (High, Moderate, Low; strength in SD units) is replaced by th
 
 ## Stage gates
 
-Nine gates; Sean sets the Approval column, and the next stage starts only on Approved. Gate 0 is this plan and is awaiting his decision now. (In this file the approval column is plain text; the live document has a dropdown. The repository copy of the tracker is `gates/GATE_LOG.md`.)
+Nine gates; Sean sets the Approval column, and the next stage starts only on Approved. Gate 0 is this plan and is awaiting his decision now. (In this file the approval column is plain text and is not updated; the dropdown in the live document is the only gate tracker, and `gates/GATE_LOG.md` points to it.)
 
 | Gate | Weeks | Deliverable | Acceptance criteria | Approval |
 | --- | --- | --- | --- | --- |

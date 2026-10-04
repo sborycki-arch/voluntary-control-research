@@ -27,7 +27,7 @@ Program lead and sole approver: Sean Borycki. Gate status lives only in the Stag
 - Team plan with approval dropdowns — the only gate tracker (Claude Doc): https://claude.ai/code/artifact/8523b47c-b760-4bd5-a176-3022f20639c2
 - 3D evidence map (artifact): https://claude.ai/artifact/HDVbejcMxEMmH8LBqoiEci
 
-The files in `docs/` are exports of the live documents as of 2026-10-03. Where they differ from the live documents (for example the plan's gate statuses, and its reference to `gates/GATE_LOG.md` as a copy of the tracker), the live documents govern.
+The files in `docs/` are exports of the live documents as of 2026-10-03; one export-only note in `docs/research-team-plan.md` was updated on 2026-10-04 to name the live tracker. Where the exports differ from the live documents (for example the plan's gate statuses), the live documents govern.
 
 ## Rebuild
 ```
