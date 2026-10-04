@@ -77,6 +77,15 @@ Register ids refer to scratchpad/pm/issues_register.csv. Each row below is a dec
 | R-079 | Commit identity: the six round-2 commits were authored under Sean's name because the head agent configured git that way; the working copy now commits as "VCR head agent (Claude) <noreply@anthropic.com>". Rewriting the six commits would change every hash cited in the reviewer's reports and trace notes, so they are left as they are. Convention for the merged repository (author = agent identity, Sean as committer or sign-off?) before any merge or release | Sean |
 | R-007 (policy) | Platform transcripts (JSONL with full tool output) exist on this container's disk for every agent run so far: the head agent (the main session, 3.1 MB), the reviewer (one agent resumed across passes 1–5, 3.5 MB) and the nine round-2 fixer and verifier runs (6.6 MB). Corrected after reviewer pass 5: an earlier version of this row said the reviewer's runs had only hand-back text. Preserved at Sean's request on 2026-10-04: all of them are on branch `transcripts` of sborycki-arch/voluntary-control-research (commit ba7142f, snapshot 2026-10-04T14:06:07Z; INDEX.md maps all 18 trace records to their transcripts; the original build session's transcript is not available). The completed trace records were not edited. Still open, for runs from the dry run on: attach the platform transcript to each record with `trace_logger.py end --transcript` where one exists, and `final_report_only` otherwise? Released at Gate 7 per TRACE_SPEC, so size and content (they contain full tool output) matter | Sean |
 
+## Added on 4 October 2026, after reviewer pass 5
+
+| Id | Decision or item | Owner |
+|---|---|---|
+| none yet | Piloerection: the research document calls it lever-free, but its dataset gives the lever as "Head/neck tension" and hypothesis H3 predicts it fails the lever-free test | Sean |
+| none yet | G1b, positive-control reproduction (added to the live plan by Sean on 4 October): when it opens, Paravlic 2018's list of included studies and their full texts, and line-item approval of the two parallel extractors (charter decision 7) | Sean |
+| none yet | The copy of the research overview in the Huberman Lab Claude Project still carries the lever claim corrected on 4 October | Sean |
+| R-062 | The live plan's Summary now says ten gates, matching the Stage gates section (changed with G1b); reviewer to confirm | Reviewer |
+
 ## Not decisions — carried as known limits
 
 - R-035, R-036: RAISE version and Minozzi 2020 figures stay marked unverified until the primary documents are opened.
