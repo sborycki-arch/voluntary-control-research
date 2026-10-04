@@ -9,6 +9,8 @@ Program lead and sole approver: Sean Borycki. Gate status lives only in the Stag
 | Path | Contents |
 | --- | --- |
 | `CLAUDE.md` | Working rules for Claude Code sessions in this repo: the gate rule, provenance, verification, pacing, style |
+| `HANDOFF.md` | Where the work stands at the end of each session and what the next session does first |
+| `docs/summaries/` | Plain-language summary of the pilot evidence (PDF, not for citation) and the script that builds it |
 | `docs/research-project.md` | Voluntary Body Control Research Project: summary, rubrics, evidence by system with exact figures, quantitative synthesis, verification status, gaps, study protocol, 98 references with DOIs (export of the live Claude Doc; two charts replaced by placeholders) |
 | `docs/research-team-plan.md` | Claude Research Team Plan: operating principles, team architecture, the three certainty methods (GRADE; frequentist random-effects; Bayesian hierarchical), gate tracker, roadmap, work plan, quality controls, risks, Gate 0 decisions |
 | `docs/evidence-dataset.md` | The scored dataset as a ranked markdown table with rubrics and baseline sources |
