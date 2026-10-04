@@ -22,7 +22,7 @@ Where the programme stands at the end of a session and what the next session doe
 | Stage 1 report (status, reviewer results, open findings) | [Claude Doc, private](https://claude.ai/artifact/LqY1yJhgk9w2kqFFYxiDvr) |
 | Stage 1 package and its trace log | Branch `stage1-package` (`traces/stage1.jsonl`, `OPEN_DECISIONS.md`, `CHANGELOG.md`, `build-log/`) |
 | Reviewer's files after pass 5 | Branch `review` |
-| Platform transcripts, snapshot 14:06 UTC | Branch `transcripts` (`INDEX.md` maps each trace record to its transcript) |
+| Platform transcripts, snapshot 16:09 UTC | Branch `transcripts` (`INDEX.md` maps each trace record to its transcript) |
 | Plain-language summary of the pilot (not for citation) | `docs/summaries/` |
 
 ### Done on 4 October
@@ -50,4 +50,4 @@ Where the programme stands at the end of a session and what the next session doe
 ### Not pushed
 - Answers to the two questions Sean marked "inquiry, not for record", and the bell-curve chart that followed them.
 - Container-only material: test copies, the R installation, virtual environments.
-- The main-session transcript after 14:06 UTC, unless Sean approves a refresh.
+- The main-session transcript after 16:09 UTC.
