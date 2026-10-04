@@ -1,6 +1,6 @@
 # Skills
 
-The four skills (screening, extraction, appraisal, reviewer) are the Stage 1 deliverable and are written only after Gate 0 is Approved in `gates/GATE_LOG.md`.
+The four skills (screening, extraction, appraisal, reviewer) are the Stage 1 deliverable and are written only after Gate 0 is Approved in the live plan's Stage gates table (the only gate tracker). The Stage 1 build is on branch `stage1-package` until it is merged.
 
 Planned layout (one folder per skill, each with a `SKILL.md`):
 

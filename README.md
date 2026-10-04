@@ -2,7 +2,7 @@
 
 Evidence base, scored dataset, analysis code, visualisations and the stage-gated plan for a research program on deliberate control of normally involuntary bodily functions. Compiled 2026-10-03 in a Claude session; this bundle is the hand-off into Claude Code.
 
-Program lead and sole approver: Sean Borycki. Current state: **Gate 0 (charter) awaiting approval** — see `gates/GATE_LOG.md`.
+Program lead and sole approver: Sean Borycki. Gate status lives only in the Stage gates table of the live plan (link below); this repository holds no gate status.
 
 ## What is here
 
@@ -19,13 +19,15 @@ Program lead and sole approver: Sean Borycki. Current state: **Gate 0 (charter) 
 | `analysis/evidence.py` | Rebuilds `data/evidence.json`: strength scores, bands, elevation, Spearman ρ (certainty, prevalence) |
 | `viz/terrain_template.html`, `viz/build_terrain.py` | Source and build script for the 3D evidence map (Plotly 2.35.2 from cdn.jsdelivr.net); `viz/terrain.html` is the built page |
 | `viz/token_drawdown.py` | Session token-usage chart script (reads a Claude transcript); `viz/token_drawdown.png` is the chart from the originating session |
-| `gates/GATE_LOG.md` | The gate tracker Sean edits; gate packages go under `gates/packages/` |
-| `skills/` | Placeholder; the four SKILL.md files are a Stage 1 deliverable after Gate 0 approval |
+| `gates/GATE_LOG.md` | Pointer to the live gate tracker; gate packages go under `gates/packages/` |
+| `skills/` | Placeholder on `main`; the four SKILL.md files and the rest of the Stage 1 package are on branch `stage1-package`, not yet merged |
 
 ## Live documents
 - Research project (Claude Doc): https://claude.ai/code/artifact/6f9aa87b-3c23-4c5a-a2bf-3b7b0440a3eb
-- Team plan with approval dropdowns (Claude Doc): https://claude.ai/code/artifact/8523b47c-b760-4bd5-a176-3022f20639c2
+- Team plan with approval dropdowns — the only gate tracker (Claude Doc): https://claude.ai/code/artifact/8523b47c-b760-4bd5-a176-3022f20639c2
 - 3D evidence map (artifact): https://claude.ai/artifact/HDVbejcMxEMmH8LBqoiEci
+
+The files in `docs/` are exports of the live documents as of 2026-10-03. Where they differ from the live documents (for example the plan's gate statuses, and its reference to `gates/GATE_LOG.md` as a copy of the tracker), the live documents govern.
 
 ## Rebuild
 ```

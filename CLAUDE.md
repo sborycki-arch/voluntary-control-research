@@ -5,10 +5,10 @@ This repository holds the evidence base, scored dataset, analysis code, visualis
 ## Read first
 - `docs/research-team-plan.md` — how the team works, the three certainty methods, the gates.
 - `docs/research-project.md` — the evidence base, rubrics, verification status, protocol and 98 references.
-- `gates/GATE_LOG.md` — current gate status. **Check it before doing any work.**
+- The **Stage gates** table of the live plan, https://claude.ai/code/artifact/8523b47c-b760-4bd5-a176-3022f20639c2 — the only gate tracker. **Check it before doing any work.** `gates/GATE_LOG.md` points there and holds no status.
 
 ## Gate rule (non-negotiable)
-Work on a stage starts only after its preceding gate is marked `Approved` by Sean in `gates/GATE_LOG.md`. If the gate you need is not Approved, prepare nothing beyond the current stage's deliverable and say so.
+Work on a stage starts only after its preceding gate is marked `Approved` by Sean in the Stage gates table of the live plan (read it with the docs connector; if it cannot be read, the gate is not Approved). If the gate you need is not Approved, prepare nothing beyond the current stage's deliverable and say so.
 
 Never, without an approved stage naming it: submit a manuscript, register a protocol (PROSPERO/OSF), contact a journal, co-author, institution or participant, spend money, publish anything publicly, create a scheduled task, or start a multi-agent workflow.
 
@@ -27,8 +27,8 @@ Never, without an approved stage naming it: submit a manuscript, register a prot
 - `data/` — `evidence.json` (scored dataset), `evidence.csv` (flat), `baselines.csv` (population means/SDs with sources).
 - `analysis/` — `evidence.py` (scoring, bands, Spearman); `requirements.txt`.
 - `viz/` — 3D terrain map source and build script; session token-usage chart script.
-- `gates/` — the gate log Sean edits.
-- `skills/` — placeholder; the four SKILL.md files are a Stage 1 deliverable and do not exist until Gate 0 is Approved.
+- `gates/` — `GATE_LOG.md` (pointer to the live tracker) and `packages/` (gate packages).
+- `skills/` — placeholder on `main`; the four SKILL.md files are a Stage 1 deliverable, built on branch `stage1-package` and not yet merged.
 
 ## Style for Sean
 Lead with the answer; no preamble or option menus. Direct and factual; challenge him when he is factually wrong. No numeric ratings without a stated rubric; no emoji status markers; no motivational closers. At most one question, at the end, only where the answer genuinely forks — except on anything submitted or sent out, where questions come first.
