@@ -8,7 +8,7 @@ Scored dataset: docs/evidence-dataset.md
 ## Headline
 - 26 abilities catalogued; 10 at High certainty.
 - Strength vs certainty: Spearman rho = -0.60 (p ~ 0.05, n = 11); strength vs prevalence: rho = -0.81 (p = 0.002).
-- Every High-certainty ability works through a lever (feedback, breathing, muscle tension, imagery, suggestion).
+- Seven of the ten High-certainty abilities work through a lever (feedback, breathing, imagery, suggestion); the other three are lever-free small muscles (middle ear, eye, outer ear).
 - The one Extreme, High-certainty, common ability: tensor tympani contraction (~43% self-report; +22 dB at 250 Hz).
 - No documented unaided mind-to-mind or mind-to-another's-nerve link; hardware links (Warwick 2002, brain-spine interface 2023, brain-to-brain 2014/2019) are documented.
 
