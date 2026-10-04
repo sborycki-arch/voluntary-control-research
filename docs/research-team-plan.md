@@ -6,7 +6,7 @@ Live document (with the gate-approval dropdowns and diagrams): https://claude.ai
 
 ## Summary
 
-This plan runs the voluntary-control research programme as a stage-gated project in which a team of Claude agents does the searching, extraction, statistics and drafting, and nothing passes a gate without Sean's written approval in the tracker below. Eight gates separate charter, team setup, protocol and pre-registration, search and screening, extraction and risk of bias, the statistical analysis plan, results, and manuscript submission.
+This plan runs the voluntary-control research programme as a stage-gated project in which a team of Claude agents does the searching, extraction, statistics and drafting, and nothing passes a gate without Sean's written approval in the tracker below. Ten gates separate charter, team setup, a positive-control reproduction, protocol and pre-registration, search and screening, extraction and risk of bias, the statistical analysis plan, results, manuscript submission and the go/no-go decision on the primary study.
 
 The programme replaces the working certainty and strength rubric from the evidence review with three methods that journals already accept: GRADE certainty ratings built on Cochrane RoB 2, ROBINS-I and JBI appraisal; frequentist random-effects meta-analysis with Hartung-Knapp confidence intervals and prediction intervals; and Bayesian hierarchical meta-analysis reporting posterior probabilities of effect. Each method is specified in Section 4 with its software and its reporting standard (PRISMA 2020, PROSPERO registration, GRADE Summary of Findings).
 
@@ -69,12 +69,13 @@ The working rubric (High, Moderate, Low; strength in SD units) is replaced by th
 
 ## Stage gates
 
-Nine gates; Sean sets the Approval column, and the next stage starts only on Approved. Gate 0 is this plan and is awaiting his decision now. (In this file the approval column is plain text and is not updated; the dropdown in the live document is the only gate tracker, and `gates/GATE_LOG.md` points to it.)
+Ten gates; Sean sets the Approval column, and the next stage starts only on Approved. Gate 0 is this plan. (In this file the approval column is plain text and is not updated; the dropdown in the live document is the only gate tracker, and `gates/GATE_LOG.md` points to it.)
 
 | Gate | Weeks | Deliverable | Acceptance criteria | Approval |
 | --- | --- | --- | --- | --- |
 | G0 Charter | 0 | This plan plus the Voluntary Body Control Research Project document | Scope, the three methods, team design and gate rules agreed; co-author plan agreed; decisions in Section 10 answered | Awaiting approval |
 | G1 Team and tooling | 1 to 2 | Screening, extraction, appraisal and reviewer skills written; master CSV schema with provenance fields; pinned R or Python environment; Project folder structure; monitor task specification | Dry run on five known studies reproduces the numbers already in the research document; every skill tested on one real paper | Not submitted |
+| G1b Positive-control reproduction | 3 to 4, alongside Stage 2 | The full pipeline (two blinded extractors, reconciliation, effect sizes, frequentist and Bayesian pooling, GRADE draft, reviewer audit) run on the primary studies that Paravlic et al. 2018 pooled for motor imagery versus no exercise. Methods validation only: its results never enter the review's results and are disclosed in the protocol. Opens after G1; Stage 3 starts only after G1b is Approved | Pooled estimate inside Paravlic's 95% CI (0.42 to 1.02), or every difference traced to a study or formula choice; every number carries provenance; reviewer report has no open failure. Needs Paravlic's included-study list and full texts staged by Sean, and the two parallel extractors approved as a line item here (charter decision 7) | Not submitted |
 | G2 Protocol and pre-registration | 3 to 4 | PROSPERO-ready protocol (eligibility, search strings per database, outcomes, risk-of-bias tools, synthesis plan with the three methods and declared priors); OSF registration text for the primary study; journal shortlist with each journal's AI policy | Sean and the statistician co-author sign; registrations are submitted only after approval | Not submitted |
 | G3 Search and screening | 5 to 8 | PRISMA flow counts; deduplication log; dual-screening agreement (Cohen's κ); included-study list; full-text exclusions with reasons | κ ≥ 0.6 at title and abstract or every disagreement adjudicated by Sean; full text in hand for every included study | Not submitted |
 | G4 Extraction and risk of bias | 8 to 11 | Master CSV with provenance; dual-extraction discrepancy report; RoB 2, ROBINS-I and JBI tables; draft GRADE domain judgments | 100% of numbers carry source, location, extractor and date; all conflicts adjudicated; discrepancy rate reported | Not submitted |
@@ -87,15 +88,17 @@ A gate package always has the same four parts: the deliverable, a verification n
 
 ## Stage-gate roadmap
 
-[Roadmap in the live document: seven stage bands on a week axis 0 to 18 with gate diamonds at weeks 0, 2, 4, 8, 11, 12, 15 and 18; G8 follows G7 once the review has reported.]
+[Roadmap in the live document: eight stage bands on a week axis 0 to 18, Stage 1b alongside Stage 2 in weeks 3 and 4, with gate diamonds at weeks 0, 2, 4 (G2 and G1b), 8, 11, 12, 15 and 18; G8 follows G7 once the review has reported.]
 
-Stages 3 and 4 overlap by one week because extraction of the first included studies can start while the last full texts are screened; stages 4 and 5 overlap by one week for the same reason. Each diamond is an approval, and the one-week overlaps are the only slack in the 18 weeks.
+Stages 3 and 4 overlap by one week because extraction of the first included studies can start while the last full texts are screened; stages 4 and 5 overlap by one week for the same reason. Each diamond is an approval, and the one-week overlaps are the only slack in the 18 weeks. Stage 1b, the positive-control reproduction, runs alongside Stage 2 in weeks 3 and 4, and Stage 3 starts only when both G1b and G2 are approved.
 
 ## Work plan by stage
 
 Each stage ends with a gate package; the tools named here are the ones already used in this session, so nothing depends on capability that has not been demonstrated.
 
 **Stage 1, team and tooling (weeks 1 to 2).** The head agent writes four skills as SKILL.md files: screening (the registered criteria as a decision list), extraction (field by field, with the provenance block mandatory), appraisal (RoB 2, ROBINS-I and JBI item lists with the GRADE domain prompts) and reviewer (the PRISMA 2020 checklist plus a claims-to-source audit). It builds the master CSV schema, pins an R environment in the sandbox with metafor, meta and bayesmeta, and sets up the Project folders: protocol, searches, screening, extraction, analysis, manuscript, gate packages. The dry run re-extracts five studies already verified in the research document and must reproduce their numbers. Hand-over: skills, schema, environment manifest, dry-run report.
+
+**Stage 1b, positive-control reproduction (weeks 3 to 4, alongside Stage 2).** The head agent runs the full pipeline on the primary studies that Paravlic et al. 2018 pooled for motor imagery versus no exercise: two blinded extraction agents, reconciliation, effect sizes, frequentist and Bayesian pooling, a GRADE draft and the reviewer's audit. The pipeline must recover the published pooled estimate (0.72, 95% CI 0.42 to 1.02) or explain every difference. Sean stages the included-study list and full texts and approves the parallel extractors as a line item at G1b. The results validate the method only and never enter the review's results. Hand-over: reproduction report with the pooled estimate against the target, discrepancy log, reviewer report.
 
 **Stage 2, protocol and registration (weeks 3 to 4).** The head agent drafts the protocol in Claude Docs; the statistician agent drafts the synthesis section with the three methods and the declared priors; the citation agent verifies every protocol reference; the reviewer agent audits the protocol against the PRISMA-P items. Database search strings are written per database and tested for recall against the studies already known. Hand-over: protocol, search strings with test-recall results, OSF text, journal shortlist with AI-policy excerpts.
 
