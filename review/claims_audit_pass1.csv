@@ -1,0 +1,87 @@
+claim_id,location,claim,check_performed,result,detail
+C01,README.md:3,"Gate 0 approved 2026-10-03; record in gate-packages/",file present with that date in title and body,verified,gate-packages/G0_2026-10-03_charter-decisions.md lines 3-4
+C02,README.md:4,"the four agent skills",count SKILL.md files,verified,4 files under skills/
+C03,README.md:28,"analysis/00_load.R refuses rows with empty provenance",read code (R not installed; not executed),verified_by_reading,00_load.R lines 5-11 filter on source_doi/source_url and five provenance fields and stop()
+C04,README.md:29,"Not pinned: this build sandbox has no R and cannot reach CRAN",check for renv.lock/session_info.txt; probe CRAN from this session,verified,no renv.lock or session_info.txt; cloud.r-project.org CONNECT 403 observed in this session (proxy status log)
+C05,README.md:30,"Project folder structure ... Done",compare tree with README folder map,verified,every folder in the map exists; empty folders hold .gitkeep
+C06,README.md:6,"matches the plan's Project folder structure",open the plan,not_opened,plan not supplied in pass 1
+C07,README.md:33,"logger smoke-tested (start/end cycle, hashes, JSONL)",look for smoke-test records; re-test logger copy in PM/scratch,mismatch,no record or transcript of any smoke test in traces/ (stage1.jsonl holds only the reviewer start record). Reviewer's own re-test in PM/scratch: cycle works; hashes match sha256sum; JSONL valid
+C08,README.md:32,"Dry run ... run not executed",look for DRY_RUN_REPORT and selection.csv,verified,neither exists
+C09,README.md:45,"safety filters stopped two runs in the evidence review",open the evidence review,not_opened,evidence review not supplied in pass 1
+C10,README.md:46,"Publisher sites that blocked fetches: ahajournals, Wiley, Taylor & Francis, Science",open the evidence review,not_opened,evidence review not supplied in pass 1
+C11,README.md:4,"opened as a project in Claude Code, where ... CRAN is reachable",probe CRAN from this Claude Code session,mismatch,expected CRAN reachable; found cloud.r-project.org denied (403 on CONNECT) in this session. May differ on Sean's machine
+C12,charter D1 / abilities.md,"all 26 abilities",count rows A01-A26,verified,26 rows; names vs research document not checkable in pass 1
+C13,charter D1 / 01_frequentist.R:10,"Frequentist pooling at k >= 3",read code,verified_by_reading,nrow(d) < 3 branch skips pooling
+C14,charter D1 / 01_frequentist.R:10,"abilities below k = 3 get individual-study intervals",read code,mismatch,only a note row 'individual intervals reported' is written; no code outputs per-study intervals
+C15,charter D6 / 02_bayesian.R:5-6,"mu ~ Normal(0,1); tau ~ half-Normal(0,0.5)",read code,verified_by_reading,mu_prior <- c(0,1); dhalfnormal(t, scale = 0.5)
+C16,"charter D7 / MONITOR_SPEC.md:1,14","monitor created only after Gate 1 approved",read spec; check no scheduling artefact,verified,spec defers creation; no routine or task exists in the package
+C17,charter SC2,"nothing submitted, registered, contacted, spent, published or scheduled",search package for any such action,verified,no artefact of any such action; protocol/ searches/ manuscript/ empty
+C18,charter SC1 / population_sd.csv,"pilot numbers enter as rationale only",read 00_load.R:14-15 and csv status column,verified_by_reading,all 7 rows pilot_unverified; loader keeps status == verified only
+C19,SCHEMA.md:3 vs 00_load.R:5-7,provenance field list identical,compare,verified,same six fields (doi-or-url plus five)
+C20,SCHEMA.md master table vs master_extraction.csv header,37 fields same order,compare,verified,37 = 37; order matches
+C21,SCHEMA.md screening vs screening_decisions.csv vs screening SKILL.md:16,10 fields,compare,verified,10 = 10 = 10
+C22,SCHEMA.md appraisal vs appraisal.csv vs appraisal SKILL.md:20,field list,compare,mismatch,SCHEMA and CSV have 12 fields including notes; skill Output lists 11 (omits notes) while skill line 10 writes to notes
+C23,extraction SKILL.md vocabularies vs SCHEMA.md,value_source / verification_route / lever vocabularies,compare,verified,identical sets
+C24,appraisal SKILL.md tool list vs SCHEMA.md tool vocabulary,tool names,compare,verified,rob2 rob2_crossover robins_i jbi_case_report jbi_case_series jbi_prevalence covered; tool-sources.md adds 'quasi-experimental' not in vocabulary
+C25,TRACE_SPEC.md fields vs trace_logger.py record,all 26 field names present,compare,verified,all names present in start/end records
+C26,TRACE_SPEC.md tool_calls,"count, and counts by tool",read logger,mismatch,logger has no argument; always writes {}
+C27,TRACE_SPEC.md trace_id format,"<stage>-<role>-<instance>-<ts>-<hex>",read logger and record,mismatch,logger emits s<stage>-...; end() depends on the 's' prefix
+C28,TRACE_SPEC.md:3 file name,"traces/<stage>.jsonl",read logger,mismatch,logger writes traces/stage<N>.jsonl
+C29,TRACE_SPEC.md:3 transcripts,"saves its raw transcript to traces/transcripts/<trace_id>.md",check folder and logger,mismatch,folder empty (only .gitkeep); logger has no transcript handling; no procedure stated
+C30,stage1.jsonl prompt_sha256,hash of prompts/reviewer_pm_setup_2026-10-04.md,sha256sum,verified,919446cd... matches
+C31,stage1.jsonl input_refs[1],charter file hash,sha256sum,verified,3635632e... matches
+C32,stage1.jsonl input_refs[2],README hash,sha256sum,verified,7a9a422d... matches
+C33,stage1.jsonl input_refs[0],uploaded zip hash,sha256sum,verified,0c3b2b8a... matches
+C34,prompt (PKG = build exactly as delivered),delivered tree equals upload,compare every file hash in zip with disk,verified,57 files identical; only stage1.jsonl and the reviewer prompt were added after extraction
+C35,PM/trace_id.txt vs stage1.jsonl,trace id,compare,verified,s1-reviewer-single-20261004T042044Z-2d52
+C36,stage1.jsonl model,"claude-fable-5-1",compare with model id reported by the platform to this session,verified,matches
+C37,stage1.jsonl skill_version,"git short hash",read value,mismatch,value is no_git; package is not a git repository
+C38,REPORTING_PLAN.md:20,"nine stage gates",count gates named in charter,verified,charter names Gates 0-8 (Gate 7 submission; Gate 8 primary-study decision) = 9
+C39,METHODS_PAPER_OUTCOMES.md:9 vs charter D4,">= 10% of records" vs "10-20%",compare,verified,consistent lower bound
+C40,METHODS_PAPER_OUTCOMES.md:11 and tool-sources.md:7,"Minozzi 2020 Fleiss' kappa 0.16 (95% CI 0.08-0.24); four raters; 70 RCTs",open primary (doi.org; Europe PMC REST; PubMed E-utilities),not_opened,doi.org and www.ebi.ac.uk and eutils.ncbi.nlm.nih.gov blocked by egress proxy; api.crossref.org CONNECT 403
+C41,DRY_RUN_PROTOCOL.md:3,"Plan requirement: 'Dry run on five known studies reproduces ...'" (quotation),open the plan,not_opened,plan not supplied in pass 1
+C42,README.md:22,Gate 1 deliverable list "(plan)",open the plan,not_opened,plan not supplied in pass 1
+C43,README.md:10 and :41,gate package has four parts,internal comparison,verified,both say four; parts named at README:10; plan not opened
+C44,appraisal SKILL.md:21,RoB 2 domains D1-D5 and judgments,open riskofbias.info,not_opened,www.riskofbias.info blocked by egress proxy
+C45,appraisal SKILL.md:22,ROBINS-I domains and judgments,open riskofbias.info,not_opened,www.riskofbias.info blocked by egress proxy
+C46,tool-sources.md:5,JBI checklist names,open jbi.global,not_opened,jbi.global blocked by egress proxy
+C47,tool-sources.md:6,GRADE handbook URL,open gdt.gradepro.org,not_opened,gdt.gradepro.org blocked by egress proxy
+C48,checklists.md:4,PRISMA 2020 27 items (BMJ 372:n71),open primary,not_opened,doi.org blocked; api.crossref.org CONNECT 403
+C49,checklists.md:8,PRISMA-P 17 items (BMJ 349:g7647),open primary,not_opened,doi.org blocked; api.crossref.org CONNECT 403
+C50,checklists.md:11 and REPORTING_PLAN.md:9,PRISMA-trAIce (JMIR AI 2025 e80247) item list,open primary,not_opened,ai.jmir.org blocked; doi.org blocked
+C51,checklists.md:21 and REPORTING_PLAN.md:10,RAISE 2026 v3 (OSF FWAUD),open primary,not_opened,osf.io blocked; doi.org blocked
+C52,checklists.md:13-19 and REPORTING_PLAN.md:12,Ding et al. 2026 arXiv 2608.05179 Table 10 items,open primary,not_opened,arxiv.org blocked
+C53,checklists.md:19 vs :14-18,"The three proposed items" vs five bullets listed,internal comparison,mismatch,text says three proposed items; five bullets given; cannot resolve without the paper
+C54,checklists.md:24 and REPORTING_PLAN.md:13,BARG Kruschke 2021 Nat Hum Behav 5:1282-1291,open primary,not_opened,doi.org blocked; api.crossref.org CONNECT 403
+C55,checklists.md:27 and REPORTING_PLAN.md:15,ICMJE January 2026 Sections II.A.4 and V,open icmje.org,not_opened,www.icmje.org blocked
+C56,REPORTING_PLAN.md:16,COPE position statement on authorship and AI (2023),open publicationethics.org,not_opened,publicationethics.org blocked
+C57,REPORTING_PLAN.md:11,"Cochrane/Campbell/JBI/CEE joint position statement 2025; Environ Evid 14:20",open primary,not_opened,environmentalevidencejournal.biomedcentral.com blocked; doi.org blocked
+C58,REPORTING_PLAN.md:10 vs checklists.md:21,"RAISE v3 / v3.1, 13 March 2026" vs "v3",internal comparison,mismatch,two version labels for one standard
+C59,population_sd.csv:2,"Quer et al. 2020 PLoS ONE 10.1371/journal.pone.0227709; resting HR 65.5 (7.7); n 92457",open primary,not_opened,doi.org and journals.plos.org blocked
+C60,population_sd.csv:3,"Wright et al. 2011 NHSR 35; SBP 122 (17)",open primary,not_opened,no DOI given; hosts blocked
+C61,population_sd.csv:4,"Geneva et al. 2019 OFID 10.1093/ofid/ofz032; axillary 35.97 (0.48)",open primary,not_opened,doi.org blocked
+C62,population_sd.csv:5,"Uematsu et al. 1988 J Neurosurg; 0.31 (0.25) degC; n 56",open primary,not_opened,no DOI given; hosts blocked
+C63,population_sd.csv:6,"Sci Rep 2019 thermography (identify exact paper); 27.16 (3.2)",open primary,not_opened,citation incomplete in the package itself
+C64,population_sd.csv:7,"Schroeder et al. 2018 Eur J Ophthalmol; 4.03 (0.9) mm; n 91",open primary,not_opened,no DOI given; hosts blocked
+C65,population_sd.csv:8,"Shahnaz & Ciocca 2026 Hear Res; SD 5.0 dB; n 126",open primary,not_opened,no DOI given; hosts blocked
+C66,DRY_RUN_PROTOCOL.md:12,"Kozhevnikov et al. 2013 PLoS ONE: largest individual axillary rise +2.2 degC; peak 38.3 degC",open primary; check research document,not_opened,journals.plos.org blocked; research document not supplied in pass 1
+C67,DRY_RUN_PROTOCOL.md:13,"Zeidan et al. 2011 J Neurosci: intensity -40%, unpleasantness -57% after 4 x 20 min",open primary; check research document,not_opened,hosts blocked; research document not supplied in pass 1
+C68,DRY_RUN_PROTOCOL.md:14,"Meissner et al. 2024 Nat Hum Behav: randomised 56 + 25",open primary; check research document,not_opened,hosts blocked; research document not supplied in pass 1
+C69,DRY_RUN_PROTOCOL.md:15,"Code 1995: one ear 22%, both 18%, n = 442",open primary; check research document,not_opened,hosts blocked; research document not supplied in pass 1
+C70,DRY_RUN_PROTOCOL.md:16,"Eberhardt et al. 2021 Int J Psychophysiol: -2.4 mm constriction, +0.8 mm dilation, n = 1",open primary; check research document,not_opened,hosts blocked; research document not supplied in pass 1
+C71,DRY_RUN_PROTOCOL.md:17,"Manuck 1976: +3.4 bpm raising; lowering not achieved; n = 60",open primary; check research document,not_opened,hosts blocked; research document not supplied in pass 1
+C72,DRY_RUN_PROTOCOL.md:18,"Paravlic et al. 2018 meta-analysis: ES 0.72",open primary; check research document,not_opened,hosts blocked; research document not supplied in pass 1
+C73,abilities.md:3,"Pilot 'change shown' values come from the evidence map",look for the column,mismatch,no such column in the table
+C74,appraisal SKILL.md:35,"Starting level High ... for ROBINS-I-appraised evidence under that tool's convention",open GRADE/ROBINS-I guidance,not_opened,hosts blocked
+C75,TRACE_SPEC.md:34-35 logger usage lines,arguments exist in argparse,compare with trace_logger.py:52-59,verified,all named options exist
+C76,DRY_RUN_PROTOCOL.md:25,"delete one location field and confirm the load stops",read 00_load.R,verified_by_reading,location is in the prov vector; stop() fires
+C77,ENVIRONMENT.md:11,"Python is used only for the trace logger (standard library)",read imports,verified,argparse hashlib json os secrets subprocess sys datetime: all standard library
+C78,README.md:39 vs setup.R,"Rscript analysis/setup.R then renv::snapshot()",read setup.R,verified,setup.R already snapshots (line 6); README step is redundant but not wrong
+C79,SCHEMA.md:51-54,"Effect-size conventions (computed in analysis code ...)",search analysis/ for escalc/Hedges/delta-method/logit code,mismatch,no code computes effect sizes; 01_frequentist.R reads a pre-built effect_sizes.csv; pop SDs loaded and never used
+C80,run_all.R:1,"One-command rebuild of every table and figure from the raw file",read the chain of inputs,mismatch,chain starts at analysis/outputs/effect_sizes.csv which no script produces from the raw master
+C81,03_sof.R:5-8,grade_final.csv columns outcome n_studies n_participants final_certainty reasons plain_language_statement,search for a definition,mismatch,no schema or template defines grade_final.csv; appraisal skill defines grade_draft.csv with draft_certainty
+C82,ENVIRONMENT.md:9 vs setup.R:4,package list,compare,verified,same nine packages
+C83,screening SKILL.md:47 vs charter D4,"Sean or a co-author screens that subset",compare with charter,mismatch,charter assigns the blind subset to the two co-authors; Sean also adjudicates disagreements
+C84,extraction SKILL.md vs charter D4,extraction agent-vs-human kappa on blind subset,search skill and METHODS_PAPER_OUTCOMES #4,mismatch,no blind human extraction subset; outcome #4 has agent-agent agreement and a spot-check only
+C85,TRACE_SPEC.md:11 roles vs skills/,roles search statistician citation writer monitor head,look for skills,mismatch,only four skills exist; dry-run step 5 and 01_frequentist.R:4 depend on a statistician agent with no skill. Staging may be in the plan (not opened)
+C86,charter SC2 / trace record,"Trace capture from the first agent call",count trace records for agent runs so far,mismatch,build run and claimed smoke test have no record; only the reviewer start record exists
