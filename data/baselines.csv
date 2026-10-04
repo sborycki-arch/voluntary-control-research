@@ -1,0 +1,8 @@
+key,variable,mean,sd,unit,source
+rhr,Resting heart rate,65.5,7.7,bpm,"Quer et al. 2020, PLoS ONE (n = 92,457)"
+sbp,Systolic blood pressure,122,17,mmHg,"NHANES 2001–08 (Wright et al. 2011, NHSR 35); SD derived from 5th–95th and IQR percentiles"
+axil,Axillary (core) temperature,35.97,0.48,°C,"Geneva et al. 2019, Open Forum Infect Dis (axillary)"
+asym,Left-right hand skin-temperature difference,0.31,0.25,°C,"Uematsu et al. 1988, J Neurosurg (hand, n = 56)"
+fing,Fingertip skin temperature at 23 C room,27.16,3.2,°C,"Sci Rep 2019 thermography, healthy controls at 23 °C room"
+pup,"Pupil diameter, photopic (16 lux)",4.03,0.9,mm,"Schröder et al. 2018, Eur J Ophthalmol (photopic, n = 91)"
+hear,Hearing threshold at 250 Hz,,5.0,dB,"Shahnaz & Ciocca 2026, Hear Res (250 Hz, n = 126)"

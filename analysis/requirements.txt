@@ -1,0 +1,4 @@
+scipy>=1.11
+matplotlib>=3.8
+# optional, for headless rendering checks of viz/terrain_standalone.html
+playwright>=1.45

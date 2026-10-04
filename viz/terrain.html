@@ -1,0 +1,421 @@
+<title>Voluntary Control Terrain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,500..800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a survey sheet. Header + findings strip, then the terrain (wide) beside a field-notes rail, then the ranked table and method. */
+:root {
+  --bg: #f3f5f4;
+  --surface: #fcfcfb;
+  --ink: #0f1417;
+  --ink-2: #4a535a;
+  --muted: #747d83;
+  --hair: #dce1df;
+  --accent: #1c5cab;
+  --accent-wash: #e5edf8;
+  --contour: rgba(15, 20, 23, 0.16);
+  --mark: #0f1417;
+  /* elevation ramp, low -> high (one hue) */
+  --t0: #cde2fb; --t1: #86b6ef; --t2: #3987e5; --t3: #1c5cab; --t4: #0d366b;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e1113; --surface: #15191c; --ink: #eef1f0; --ink-2: #b4bbc0; --muted: #7f888e; --hair: #283035;
+    --accent: #6da7ec; --accent-wash: #1a2738; --contour: rgba(238, 241, 240, 0.16); --mark: #eef1f0;
+    --t0: #0d366b; --t1: #184f95; --t2: #256abf; --t3: #5598e7; --t4: #b7d3f6;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e1113; --surface: #15191c; --ink: #eef1f0; --ink-2: #b4bbc0; --muted: #7f888e; --hair: #283035;
+  --accent: #6da7ec; --accent-wash: #1a2738; --contour: rgba(238, 241, 240, 0.16); --mark: #eef1f0;
+  --t0: #0d366b; --t1: #184f95; --t2: #256abf; --t3: #5598e7; --t4: #b7d3f6;
+  color-scheme: dark;
+}
+[hidden] { display: none !important; }
+html, body { background: var(--bg); color: var(--ink); }
+body { font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1260px; margin: 0 auto; padding-inline: max(16px, 3vw); padding-block: 28px 56px; display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--font-display); font-stretch: 112%; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(30px, 4.6vw, 48px); font-weight: 760; letter-spacing: -0.015em; line-height: 1.05; }
+h2 { font-size: 20px; font-weight: 700; }
+h3 { font-size: 15px; font-weight: 700; font-stretch: 105%; }
+p { margin: 0; }
+.eyebrow { font-family: var(--font-data); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+header { display: grid; gap: 12px; }
+.lede { max-width: 68ch; color: var(--ink-2); font-size: 16.5px; }
+
+.findings { display: flex; flex-wrap: wrap; gap: 14px 40px; padding-block: 16px; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+.finding { display: grid; gap: 2px; min-width: 0; }
+.finding b { font-family: var(--font-data); font-weight: 500; font-size: 22px; letter-spacing: -0.01em; }
+.finding span { color: var(--ink-2); font-size: 13.5px; max-width: 30ch; }
+.caveat { color: var(--muted); font-size: 13.5px; max-width: 80ch; }
+
+.stage { display: grid; grid-template-columns: minmax(0, 2.25fr) minmax(270px, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 900px) { .stage { grid-template-columns: minmax(0, 1fr); } }
+.plot-card { background: var(--surface); border: 1px solid var(--hair); border-radius: 12px; overflow: hidden; min-width: 0; position: relative; }
+#terrain { width: 100%; height: clamp(460px, 70vh, 740px); }
+.plot-foot { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 10px 14px 12px; border-top: 1px solid var(--hair); color: var(--muted); font-size: 12.5px; }
+.fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; text-align: center; color: var(--ink-2); }
+
+.rail { display: grid; gap: 16px; min-width: 0; }
+.panel { background: var(--surface); border: 1px solid var(--hair); border-radius: 12px; padding: 16px; display: grid; gap: 12px; min-width: 0; }
+.ctrl-row { display: grid; gap: 6px; }
+.ctrl-label { font-size: 12px; color: var(--muted); font-family: var(--font-data); letter-spacing: 0.06em; text-transform: uppercase; }
+.seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--hair); border-radius: 8px; overflow: hidden; width: fit-content; max-width: 100%; }
+.seg button { font: inherit; font-size: 13.5px; padding: 6px 12px; border: 0; background: transparent; color: var(--ink-2); cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--hair); }
+.seg button[aria-pressed="true"] { background: var(--accent-wash); color: var(--ink); font-weight: 600; }
+.seg button:focus-visible, .linkbtn:focus-visible, .rowbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.linkbtn { font: inherit; font-size: 13.5px; background: none; border: 0; padding: 0; color: var(--accent); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; width: fit-content; }
+
+.detail h3 { font-size: 19px; font-stretch: 110%; }
+.kv { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 6px 12px; font-size: 14px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.big { font-family: var(--font-data); font-size: 28px; font-weight: 500; line-height: 1.1; }
+.sub { color: var(--ink-2); font-size: 13.5px; }
+
+.band { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; white-space: nowrap; }
+.band::before { content: ""; width: 10px; height: 10px; border-radius: 2px; background: var(--hair); flex: none; }
+.band[data-band="Small"]::before { background: var(--t1); }
+.band[data-band="Moderate"]::before { background: var(--t2); }
+.band[data-band="Large"]::before { background: var(--t3); }
+.band[data-band="Extreme"]::before { background: var(--t4); }
+.band[data-band="On/off"]::before { background: transparent; border: 1.5px solid var(--ink-2); transform: rotate(45deg) scale(0.8); }
+.meter { display: inline-flex; gap: 2px; vertical-align: middle; margin-right: 6px; }
+.meter i { width: 10px; height: 6px; border-radius: 1px; background: var(--hair); }
+.meter i.on { background: var(--ink-2); }
+
+.key { display: grid; gap: 7px; font-size: 13.5px; color: var(--ink-2); }
+.key div { display: flex; gap: 8px; align-items: baseline; }
+.key .sym { font-family: var(--font-data); color: var(--ink); width: 14px; flex: none; text-align: center; }
+.ramp { height: 10px; border-radius: 3px; background: linear-gradient(90deg, var(--t0) 0%, var(--t1) 11.7%, var(--t2) 20%, var(--t3) 40%, var(--t4) 100%); }
+.ramp-ticks { position: relative; height: 16px; font-family: var(--font-data); font-size: 11px; color: var(--muted); }
+.ramp-ticks span { position: absolute; transform: translateX(-50%); }
+.ramp-ticks span:first-child { transform: none; }
+.ramp-ticks span:last-child { transform: translateX(-100%); }
+
+section { display: grid; gap: 14px; min-width: 0; }
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--hair); border-radius: 12px; }
+table { border-collapse: collapse; width: 100%; min-width: 820px; font-size: 14px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--hair); vertical-align: top; }
+th { font-family: var(--font-data); font-size: 11.5px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--surface); position: sticky; top: 0; }
+td.num { font-family: var(--font-data); font-variant-numeric: tabular-nums; white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+tbody tr.sel td { background: var(--accent-wash); }
+tr.group td { font-family: var(--font-data); font-size: 11.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); background: var(--bg); padding-block: 7px; }
+.rowbtn { font: inherit; font-weight: 600; color: var(--ink); background: none; border: 0; padding: 0; text-align: left; cursor: pointer; }
+.rowbtn:hover { color: var(--accent); }
+td .src { display: block; color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+
+.method { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; }
+.method ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--ink-2); font-size: 14px; }
+.method p { color: var(--ink-2); font-size: 14px; max-width: 68ch; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Field survey · 26 documented abilities · October 2026</div>
+    <h1>Voluntary Control Terrain</h1>
+    <p class="lede">Each hill is a documented case of people changing a feature of their own body. Height is how far that change moves the feature from the healthy-adult average, in standard deviations. The ground plots how certain the evidence is against how many people can do it.</p>
+  </header>
+
+  <div class="findings" role="list">
+    <div class="finding" role="listitem"><b id="f-rho-c">ρ −0.60</b><span>Strength vs certainty: the taller the hill, the weaker the evidence (p ≈ 0.05, n = 11)</span></div>
+    <div class="finding" role="listitem"><b id="f-rho-p">ρ −0.81</b><span>Strength vs who can do it: peaks belong to 1–10 people (p = 0.002)</span></div>
+    <div class="finding" role="listitem"><b>4.4 SD</b><span>Middle-ear muscle: the one Extreme response with High certainty, ~43% of people</span></div>
+  </div>
+  <p class="caveat">Low-certainty heights are the best individual result; high-certainty heights are group averages. That steepens the slope, so read the correlation as direction, not as a precise number.</p>
+
+  <div class="stage">
+    <div class="plot-card">
+      <div id="terrain" role="img" aria-label="3D terrain of voluntary body control: height is response strength in standard deviations; ground axes are certainty of evidence and who can do it. The ranked table below lists every value."></div>
+      <div class="fallback" id="fallback" hidden>The 3D view needs the Plotly library from cdn.jsdelivr.net, which didn't load. Every value is in the ranked table below.</div>
+      <div class="plot-foot"><span>Drag to rotate · scroll or pinch to zoom · tap a marker for details</span><span>Sea level = no documented response</span></div>
+    </div>
+
+    <aside class="rail">
+      <div class="panel">
+        <div class="ctrl-row">
+          <span class="ctrl-label" id="lbl-view">View</span>
+          <div class="seg" role="group" aria-labelledby="lbl-view">
+            <button type="button" id="view-3d" aria-pressed="true">3D terrain</button>
+            <button type="button" id="view-map" aria-pressed="false">Contour map</button>
+          </div>
+        </div>
+        <div class="ctrl-row">
+          <span class="ctrl-label" id="lbl-labels">Labels</span>
+          <div class="seg" role="group" aria-labelledby="lbl-labels">
+            <button type="button" id="lab-peaks" aria-pressed="true">Peaks</button>
+            <button type="button" id="lab-all" aria-pressed="false">All</button>
+            <button type="button" id="lab-none" aria-pressed="false">None</button>
+          </div>
+        </div>
+        <button type="button" class="linkbtn" id="reset">Reset view</button>
+      </div>
+
+      <div class="panel detail" id="detail" aria-live="polite"></div>
+
+      <div class="panel">
+        <h3>Reading the map</h3>
+        <div>
+          <div class="ramp" aria-hidden="true"></div>
+          <div class="ramp-ticks" aria-hidden="true">
+            <span style="left:0%">0</span><span style="left:11.7%">0.5</span><span style="left:20%">1</span><span style="left:40%">3</span><span style="left:69.2%">10</span><span style="left:100%">30 SD</span>
+          </div>
+        </div>
+        <div class="key">
+          <div><span class="sym">●</span><span>Summit of a measured hill (SD from the mean, or a reported effect size)</span></div>
+          <div><span class="sym">■</span><span>Percent change only; set at the middle of its band</span></div>
+          <div><span class="sym">◆</span><span>On/off: a silent muscle switches on, so there's no SD to measure against</span></div>
+          <div><span class="sym">○</span><span>Control shown, size not reported</span></div>
+          <div><span class="sym">×</span><span>Tested, nothing found</span></div>
+        </div>
+        <div class="key">
+          <div><span class="band" data-band="Small">Small</span><span>under 0.5 SD</span></div>
+          <div><span class="band" data-band="Moderate">Moderate</span><span>0.5–1 SD</span></div>
+          <div><span class="band" data-band="Large">Large</span><span>1–3 SD</span></div>
+          <div><span class="band" data-band="Extreme">Extreme</span><span>over 3 SD</span></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <section aria-labelledby="h-table">
+    <h2 id="h-table">Ranked by strength versus the mean</h2>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>#</th><th>Feature</th><th>Change shown</th><th>Strength</th><th>Band</th><th>Certainty</th><th>Who</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-method">
+    <h2 id="h-method">Method</h2>
+    <div class="method">
+      <div class="key" style="gap:10px">
+        <p><b>Strength</b> = size of the change ÷ the population SD of that feature in healthy adults at rest. Where a source reports a standardized effect size (d or g), that is used. Elevation is drawn on a log scale so a 30 SD spike and a 0.3 SD rise both stay readable.</p>
+        <p><b>Certainty</b> rates whether the control exists, not whether it helps clinically. High: objectively measured, replicated by independent groups or meta-analysis, mechanism understood. Moderate: objective, controlled, but small samples or mostly one group. Low: one study, a handful of people, or not peer-reviewed. Not supported: tested and not shown.</p>
+        <p><b>Who can do it</b>: None · Single cases (≤3 people) · Adepts (a small expert group, rate unmeasured) · Rare (&lt;5%, measured) · Minority (5–50%, measured) · Most, with training (group studies).</p>
+      </div>
+      <div class="key" style="gap:10px">
+        <h3>Population SDs used</h3>
+        <ul id="baselines"></ul>
+        <p>Hill positions inside a cell are spread out so they don't overlap; only the cell (certainty × who) carries meaning.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+<script>
+const DATA = {"features": [{"id": "swami_rama", "feature": "Heart-rate surge (Swami Rama)", "short": "Swami Rama heart surge", "system": "Heart", "certainty": "Low", "prevalence": "Single cases", "prev_value": null, "change": "Atrial flutter ~300 bpm for ~17 s", "basis": "computed", "who": "1 person", "lever": "Unknown", "sources": "Green & Green 1977, Beyond Biofeedback (book, not peer-reviewed)", "note": "Single demonstration; figures vary between accounts (300 bpm/17 s vs 306 bpm/16.2 s).", "cert_level": 1, "prev_level": 1, "strength_sd": 30.4545, "band": "Extreme", "plot_sd": 30.4545, "elev": 4.975, "baseline_text": "SD 7.7 bpm — Quer et al. 2020, PLoS ONE (n = 92,457)", "pct": null}, {"id": "hand_split", "feature": "Hand-to-hand temperature split", "short": "Hand-to-hand temp split", "system": "Temperature", "certainty": "Low", "prevalence": "Single cases", "prev_value": null, "change": "Up to 4 °C between matching sites on opposite hands within 2 min", "basis": "computed", "who": "3 hypnotic subjects", "lever": "Hypnosis", "sources": "Maslach, Marshall & Zimbardo 1972, Psychophysiology (case report; figures from their 1970 ONR report)", "note": "Best result among 3 subjects; 6 waking controls could not do it.", "cert_level": 1, "prev_level": 1, "strength_sd": 14.76, "band": "Extreme", "plot_sd": 14.76, "elev": 3.978, "baseline_text": "SD 0.25 °C — Uematsu et al. 1988, J Neurosurg (hand, n = 56)", "pct": null}, {"id": "core_temp", "feature": "Core (armpit) temperature rise", "short": "Core temp rise", "system": "Temperature", "certainty": "Low", "prevalence": "Adepts", "prev_value": null, "change": "+2.2 °C largest individual rise; peak 38.3 °C", "basis": "computed", "who": "10 g-Tummo experts; Westerners partly", "lever": "Vase breathing + visualization", "sources": "Kozhevnikov et al. 2013, PLoS ONE", "note": "Best individual; group baseline 36.49 °C (SD 0.21).", "cert_level": 1, "prev_level": 2, "strength_sd": 4.5833, "band": "Extreme", "plot_sd": 4.5833, "elev": 2.481, "baseline_text": "SD 0.48 °C — Geneva et al. 2019, Open Forum Infect Dis (axillary)", "pct": null}, {"id": "tensor_tympani", "feature": "Middle-ear muscle (tensor tympani)", "short": "Middle-ear muscle", "system": "Ear", "certainty": "High", "prevalence": "Minority", "prev_value": 0.432, "change": "Hearing threshold +22 dB at 250 Hz during contraction", "basis": "computed", "who": "43% self-report (CI 36–50%)", "lever": "Direct", "sources": "Wickens et al. 2017 (n = 5, tympanometry); Röddiger et al. 2021; Hoyle et al. 2024", "note": "Prevalence from self-report; upper bound 55% (Hoyle 2024).", "cert_level": 3, "prev_level": 4, "strength_sd": 4.4, "band": "Extreme", "plot_sd": 4.4, "elev": 2.433, "baseline_text": "SD 5.0 dB — Shahnaz & Ciocca 2026, Hear Res (250 Hz, n = 126)", "pct": null}, {"id": "pupil_direct", "feature": "Pupil constriction, direct", "short": "Pupil, direct", "system": "Eye", "certainty": "Low", "prevalence": "Single cases", "prev_value": null, "change": "−2.4 mm constriction (+0.8 mm dilation) with no light or focus change", "basis": "computed", "who": "1 documented person", "lever": "Direct", "sources": "Eberhardt et al. 2021, Int J Psychophysiol", "note": "Subject's baseline 4.96 mm; dilation alone = 0.9 SD.", "cert_level": 1, "prev_level": 1, "strength_sd": 2.6667, "band": "Large", "plot_sd": 2.6667, "elev": 1.874, "baseline_text": "SD 0.9 mm — Schröder et al. 2018, Eur J Ophthalmol (photopic, n = 91)", "pct": null}, {"id": "finger_temp", "feature": "Finger/toe warming", "short": "Finger/toe warming", "system": "Temperature", "certainty": "Moderate", "prevalence": "Single cases", "prev_value": null, "change": "Up to +8.3 °C", "basis": "computed", "who": "3 monks (best result)", "lever": "g-Tummo meditation", "sources": "Benson et al. 1982, Nature", "note": "Smaller feedback-trained warming is widely taught; Raynaud's attacks not reduced by it (RTS 2000).", "cert_level": 2, "prev_level": 1, "strength_sd": 2.5938, "band": "Large", "plot_sd": 2.5938, "elev": 1.846, "baseline_text": "SD 3.2 °C — Sci Rep 2019 thermography, healthy controls at 23 °C room", "pct": null}, {"id": "heart_rate", "feature": "Heart rate, direct", "short": "Heart rate", "system": "Heart", "certainty": "Moderate", "prevalence": "Most with training", "prev_value": null, "change": "+3.4 bpm up; lowering not achieved", "basis": "computed", "who": "Group mean, typical adults", "lever": "Feedback", "sources": "Manuck 1976 (n = 60); Belmaker 1972", "note": "Hidden muscle tension alone can add >13 bpm.", "cert_level": 2, "prev_level": 5, "strength_sd": 0.4416, "band": "Small", "plot_sd": 0.4416, "elev": 0.528, "baseline_text": "SD 7.7 bpm — Quer et al. 2020, PLoS ONE (n = 92,457)", "pct": null}, {"id": "blood_pressure", "feature": "Blood pressure via slow breathing", "short": "Blood pressure", "system": "Heart", "certainty": "Moderate", "prevalence": "Most with training", "prev_value": null, "change": "−4 mmHg systolic (device-guided breathing, net of placebo)", "basis": "computed", "who": "Hypertensive adults", "lever": "Slow breathing", "sources": "AHA statement, Brook et al. 2013 (IIa/B)", "note": "TM −4.7 mmHg (0.28 SD); biofeedback alone −0.8 (n.s.).", "cert_level": 2, "prev_level": 5, "strength_sd": 0.2353, "band": "Small", "plot_sd": 0.2353, "elev": 0.305, "baseline_text": "SD 17 mmHg — NHANES 2001–08 (Wright et al. 2011, NHSR 35); SD derived from 5th–95th and IQR percentiles", "pct": null}, {"id": "pupil_biofeedback", "feature": "Pupil size via biofeedback", "short": "Pupil, biofeedback", "system": "Eye", "certainty": "Moderate", "prevalence": "Most with training", "prev_value": null, "change": "Volitional up/down pupil control after 3 days", "basis": "reported effect size", "who": "Trained participants", "lever": "Imagery / relaxation", "sources": "Meissner et al. 2024, Nat Hum Behav (randomized 56 + 25)", "note": "d ≈ 2.0 converted from ηp² 0.50 (group difference); mm change not reported in main text.", "cert_level": 2, "prev_level": 5, "strength_sd": 2.0, "band": "Large", "plot_sd": 2.0, "elev": 1.585, "baseline_text": "Standardized effect size from the source", "pct": null}, {"id": "strength_imagery", "feature": "Strength from imagined contractions", "short": "Strength by imagery", "system": "Muscle", "certainty": "High", "prevalence": "Most with training", "prev_value": null, "change": "+35% finger, +13.5% elbow in 12 wk", "basis": "reported effect size", "who": "Healthy adults", "lever": "Imagined contractions", "sources": "Paravlic et al. 2018 meta (ES 0.72); Ranganathan 2004; Clark 2014", "note": "Physical training does more (ES 0.42 in its favor).", "cert_level": 3, "prev_level": 5, "strength_sd": 0.72, "band": "Moderate", "plot_sd": 0.72, "elev": 0.782, "baseline_text": "Standardized effect size from the source", "pct": null}, {"id": "hypnotic_analgesia", "feature": "Pain relief by hypnosis", "short": "Pain, hypnosis", "system": "Perception", "certainty": "High", "prevalence": "Most with training", "prev_value": null, "change": "d 0.67 overall; 1.16 high-suggestibility, −0.01 low", "basis": "reported effect size", "who": "Scales with suggestibility", "lever": "Hypnotic suggestion", "sources": "Montgomery et al. 2000 meta (933); Thompson et al. 2019 meta (3,632)", "note": "High suggestibles: pain −42% with direct suggestion (Thompson 2019).", "cert_level": 3, "prev_level": 5, "strength_sd": 0.67, "band": "Moderate", "plot_sd": 0.67, "elev": 0.74, "baseline_text": "Standardized effect size from the source", "pct": null}, {"id": "hrv", "feature": "Heart-rate oscillation (HRV) via breathing", "short": "HRV oscillation", "system": "Heart", "certainty": "High", "prevalence": "Most with training", "prev_value": null, "change": "Oscillation grows to many times its resting size", "basis": "percent only", "who": "Most people", "lever": "Breathing ~5.5–6/min", "sources": "Lehrer & Gevirtz 2014; Goessl et al. 2017 meta", "note": "Magnitude described, not tabulated; plotted at the Extreme threshold as a lower bound.", "cert_level": 3, "prev_level": 5, "strength_sd": null, "band": "Extreme", "plot_sd": 3.0, "elev": 2.0, "baseline_text": "Described as many-fold; plotted at the Extreme threshold", "pct": null}, {"id": "inflammation", "feature": "Inflammatory response via breathing", "short": "Inflammatory response", "system": "Immune", "certainty": "Moderate", "prevalence": "Most with training", "prev_value": null, "change": "IL-6 −35%, TNF-α −32%, IL-10 +44% vs untrained", "basis": "percent only", "who": "Trained volunteers", "lever": "Hyperventilation + breath-hold", "sources": "Kox et al. 2014, PNAS; Zwaag et al. 2022", "note": "One research group; cytokines vary widely between people, so % may overstate SD units.", "cert_level": 2, "prev_level": 5, "strength_sd": null, "band": "Large", "plot_sd": 1.7320508075688772, "elev": 1.45, "baseline_text": "Percent change only; placed at band middle", "pct": -35}, {"id": "meditation_pain", "feature": "Pain relief by meditation", "short": "Pain, meditation", "system": "Perception", "certainty": "Moderate", "prevalence": "Most with training", "prev_value": null, "change": "Intensity −40%, unpleasantness −57% after 4×20 min", "basis": "percent only", "who": "Novices after 4 sessions", "lever": "Attention training", "sources": "Zeidan et al. 2011, 2015, 2016", "note": "Larger trial (2015): intensity −27% vs placebo −11%.", "cert_level": 2, "prev_level": 5, "strength_sd": null, "band": "Large", "plot_sd": 1.7320508075688772, "elev": 1.45, "baseline_text": "Percent change only; placed at band middle", "pct": -40}, {"id": "seizures", "feature": "Seizure frequency via skin-conductance feedback", "short": "Seizure frequency", "system": "Brain", "certainty": "Moderate", "prevalence": "Most with training", "prev_value": null, "change": "−43% mean; 45% had >50% fewer", "basis": "percent only", "who": "Drug-resistant epilepsy patients", "lever": "Skin-conductance feedback", "sources": "Nagai et al. 2004, 2018; Nagai 2019 meta", "note": "Mostly one group; controls rose +31% (usual care, not sham).", "cert_level": 2, "prev_level": 5, "strength_sd": null, "band": "Large", "plot_sd": 1.7320508075688772, "elev": 1.45, "baseline_text": "Percent change only; placed at band middle", "pct": -43}, {"id": "mind_muscle", "feature": "Muscle growth by internal focus", "short": "Muscle focus", "system": "Muscle", "certainty": "Moderate", "prevalence": "Most with training", "prev_value": null, "change": "Biceps growth 12.4% vs 6.9% (+5.5 points)", "basis": "percent only", "who": "Lifters", "lever": "Internal focus", "sources": "Schoenfeld et al. 2018; Calatayud et al. 2016", "note": "EMG gain only at 20–60% of max load.", "cert_level": 2, "prev_level": 5, "strength_sd": null, "band": "Small", "plot_sd": 0.25, "elev": 0.322, "baseline_text": "Percent change only; placed at band middle", "pct": 5.5}, {"id": "heart_stop", "feature": "Stopping the heart", "short": "Stopping the heart", "system": "Heart", "certainty": "Not supported", "prevalence": "None", "prev_value": null, "change": "Heart kept beating; brief slowing at most", "basis": "none", "who": "No one shown", "lever": "Breath-hold under pressure (Valsalva)", "sources": "Wenger, Bagchi & Anand 1961, Circulation; Khalsa et al. 2015 review", "note": "ECG showed reduced QRS amplitude, not arrest.", "cert_level": 0, "prev_level": 0, "strength_sd": 0.0, "band": "None", "plot_sd": 0.0, "elev": 0.0, "baseline_text": "—", "pct": null}, {"id": "motor_unit", "feature": "Single motor units", "short": "Single motor units", "system": "Muscle", "certainty": "High", "prevalence": "Most with training", "prev_value": null, "change": "Fire one spinal motor neuron's unit in isolation", "basis": "on/off", "who": "Most, with training", "lever": "EMG feedback", "sources": "Basmajian 1963, Science; Bräcklein et al. 2022, eLife", "note": "Independent control limited by shared input.", "cert_level": 3, "prev_level": 5, "strength_sd": null, "band": "On/off", "plot_sd": null, "elev": null, "baseline_text": "No SD at rest (full activation)", "pct": null}, {"id": "goosebumps", "feature": "Goosebumps on cue", "short": "Goosebumps", "system": "Skin", "certainty": "Moderate", "prevalence": "Rare", "prev_value": 0.028, "change": "Piloerection on cue, onset ~4 s", "basis": "on/off", "who": "~2.8%", "lever": "Head/neck tension", "sources": "Katahira et al. 2020; Heathers et al. 2018", "note": "Objective in 9 of 15.", "cert_level": 2, "prev_level": 3, "strength_sd": null, "band": "On/off", "plot_sd": null, "elev": null, "baseline_text": "No SD at rest (full activation)", "pct": null}, {"id": "nystagmus", "feature": "Voluntary nystagmus", "short": "Voluntary nystagmus", "system": "Eye", "certainty": "High", "prevalence": "Minority", "prev_value": 0.08, "change": "22–30 Hz eye oscillation for 4–35 s", "basis": "on/off", "who": "~8%, familial", "lever": "Direct, often via convergence", "sources": "Zahn 1978", "note": "79% had relatives who could.", "cert_level": 3, "prev_level": 4, "strength_sd": null, "band": "On/off", "plot_sd": null, "elev": null, "baseline_text": "No SD at rest (full activation)", "pct": null}, {"id": "ear_muscles", "feature": "Ear muscles", "short": "Ear wiggling", "system": "Ear", "certainty": "High", "prevalence": "Minority", "prev_value": 0.22, "change": "Move one ear (22%) or both (18%)", "basis": "on/off", "who": "~1 in 5", "lever": "Direct", "sources": "Code 1995 (n = 442); Strauss et al. 2020", "note": "Vestigial muscles.", "cert_level": 3, "prev_level": 4, "strength_sd": null, "band": "On/off", "plot_sd": null, "elev": null, "baseline_text": "No SD at rest (full activation)", "pct": null}, {"id": "single_neurons", "feature": "Single brain neurons (implant)", "short": "Single neurons", "system": "Brain", "certainty": "High", "prevalence": "Most with training", "prev_value": null, "change": "Raise or lower individual neurons' firing", "basis": "not quantified", "who": "Implant patients", "lever": "Implant + live feedback", "sources": "Cerf et al. 2010, Nature", "note": "Success rate not in abstract.", "cert_level": 3, "prev_level": 5, "strength_sd": null, "band": null, "plot_sd": null, "elev": null, "baseline_text": "Magnitude not reported", "pct": null}, {"id": "eeg", "feature": "EEG rhythms", "short": "EEG rhythms", "system": "Brain", "certainty": "High", "prevalence": "Most with training", "prev_value": null, "change": "Self-regulate alpha / SMR", "basis": "not quantified", "who": "Most; 15–50% don't learn", "lever": "Neurofeedback", "sources": "Kamiya 1968; Sterman & Egner 2006; Cortese 2016; Westwood 2025", "note": "ADHD benefit vanishes with blinded raters (SMD 0.04).", "cert_level": 3, "prev_level": 5, "strength_sd": null, "band": null, "plot_sd": null, "elev": null, "baseline_text": "Magnitude not reported", "pct": null}, {"id": "fmri", "feature": "Regional brain activity (fMRI)", "short": "Brain region (fMRI)", "system": "Brain", "certainty": "Moderate", "prevalence": "Most with training", "prev_value": null, "change": "Self-regulate a target region; behavior effects rarely replicate", "basis": "not quantified", "who": "Many, not all", "lever": "Neurofeedback", "sources": "Thibault et al. 2018; Sulzer et al. 2013", "note": "deCharms 2005 pain effect matched by sham.", "cert_level": 2, "prev_level": 5, "strength_sd": null, "band": null, "plot_sd": null, "elev": null, "baseline_text": "Magnitude not reported", "pct": null}, {"id": "pelvic_floor", "feature": "Pelvic-floor coordination", "short": "Pelvic floor", "system": "Muscle", "certainty": "High", "prevalence": "Most with training", "prev_value": 0.79, "change": "Dyssynergia corrected in 79% vs 4% sham", "basis": "not quantified", "who": "79% of patients", "lever": "Biofeedback", "sources": "Rao et al. 2007; Chiarioni et al. 2006", "note": "Binary outcome.", "cert_level": 3, "prev_level": 5, "strength_sd": null, "band": null, "plot_sd": null, "elev": null, "baseline_text": "Magnitude not reported", "pct": null}, {"id": "vagal", "feature": "Vagal output to the heart", "short": "Vagal output", "system": "Heart", "certainty": "Low", "prevalence": "Most with training", "prev_value": null, "change": "7 cardiac neurons recruited by slow deep breathing; conflicting result", "basis": "not quantified", "who": "Anyone breathing slowly (unconfirmed)", "lever": "Breathing", "sources": "Farmer et al. 2025, J Physiol; Macefield et al. 2026", "note": "One study, 7 units.", "cert_level": 1, "prev_level": 5, "strength_sd": null, "band": null, "plot_sd": null, "elev": null, "baseline_text": "Magnitude not reported", "pct": null}], "baselines": {"rhr": {"mean": 65.5, "sd": 7.7, "unit": "bpm", "src": "Quer et al. 2020, PLoS ONE (n = 92,457)"}, "sbp": {"mean": 122, "sd": 17, "unit": "mmHg", "src": "NHANES 2001–08 (Wright et al. 2011, NHSR 35); SD derived from 5th–95th and IQR percentiles"}, "axil": {"mean": 35.97, "sd": 0.48, "unit": "°C", "src": "Geneva et al. 2019, Open Forum Infect Dis (axillary)"}, "asym": {"mean": 0.31, "sd": 0.25, "unit": "°C", "src": "Uematsu et al. 1988, J Neurosurg (hand, n = 56)"}, "fing": {"mean": 27.16, "sd": 3.2, "unit": "°C", "src": "Sci Rep 2019 thermography, healthy controls at 23 °C room"}, "pup": {"mean": 4.03, "sd": 0.9, "unit": "mm", "src": "Schröder et al. 2018, Eur J Ophthalmol (photopic, n = 91)"}, "hear": {"mean": null, "sd": 5.0, "unit": "dB", "src": "Shahnaz & Ciocca 2026, Hear Res (250 Hz, n = 126)"}}, "stats": {"n": 11, "rho_certainty": -0.6, "p_certainty": 0.05, "rho_prevalence": -0.81, "p_prevalence": 0.002}};
+(function () {
+  const F = DATA.features;
+  const CERT = ["Not supported", "Low", "Moderate", "High"];
+  const PREV = ["None", "Single cases", "Adepts", "Rare (<5%)", "Minority (5–50%)", "Most, with training"];
+  const ZT = [0, Math.log2(1.5), 1, 2, Math.log2(11), Math.log2(31)];
+  const ZL = ["0", "0.5", "1", "3", "10", "30"];
+  const SLOTS = [[0, 0], [-0.34, 0], [0.34, 0], [0, -0.34], [0, 0.34], [-0.34, -0.34], [0.34, 0.34], [-0.34, 0.34], [0.34, -0.34]];
+  const CAM_3D = { eye: { x: 1.45, y: -1.6, z: 1.0 }, center: { x: 0, y: 0, z: -0.15 }, up: { x: 0, y: 0, z: 1 }, projection: { type: "perspective" } };
+  const CAM_MAP = { eye: { x: 0, y: 0, z: 2.4 }, center: { x: 0, y: 0, z: 0 }, up: { x: 0, y: 1, z: 0 }, projection: { type: "orthographic" } };
+  const state = { view: "3d", labels: "peaks", selected: null, camera: JSON.parse(JSON.stringify(CAM_3D)) };
+
+  // ---- place each feature inside its (certainty, who) cell ----
+  const cells = {};
+  F.forEach(f => { const k = f.cert_level + "_" + f.prev_level; (cells[k] = cells[k] || []).push(f); });
+  Object.values(cells).forEach(list => {
+    list.sort((a, b) => (b.elev ?? -1) - (a.elev ?? -1));
+    const sigma = list.length === 1 ? 0.24 : list.length <= 4 ? 0.16 : 0.12;
+    list.forEach((f, i) => { const s = SLOTS[i % SLOTS.length]; f.x = f.cert_level + s[0]; f.y = f.prev_level + s[1]; f.sigma = sigma; });
+  });
+
+  const fmtStrength = f => {
+    if (f.basis === "computed" || f.basis === "reported effect size") return (f.strength_sd >= 10 ? f.strength_sd.toFixed(1) : f.strength_sd.toFixed(2)) + " SD";
+    if (f.basis === "none") return "0";
+    if (f.basis === "percent only") return f.id === "hrv" ? "≥3 (described)" : (f.pct > 0 ? "+" : "") + f.pct + "%";
+    if (f.basis === "on/off") return "On/off";
+    return "Not reported";
+  };
+  const basisText = f => ({
+    "computed": "Change ÷ population SD",
+    "reported effect size": "Standardized effect size from the source",
+    "percent only": "Percent change only",
+    "none": "No change found",
+    "on/off": "No SD at rest",
+    "not quantified": "Size not reported"
+  })[f.basis];
+  const meter = lvl => '<span class="meter" aria-hidden="true">' + [1, 2, 3].map(i => '<i class="' + (i <= lvl ? "on" : "") + '"></i>').join("") + "</span>";
+  const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+  // ---- terrain surface: each hill is a Gaussian, the ground is the max envelope ----
+  const xs = [], ys = [];
+  for (let x = -0.6; x <= 3.6001; x += 0.025) xs.push(+x.toFixed(3));
+  for (let y = -0.6; y <= 5.6001; y += 0.025) ys.push(+y.toFixed(3));
+  const hills = F.filter(f => f.elev !== null && f.elev > 0);
+  const Z = ys.map(y => xs.map(x => {
+    let z = 0;
+    for (const h of hills) {
+      const dx = x - h.x, dy = y - h.y;
+      const v = h.elev * Math.exp(-(dx * dx + dy * dy) / (2 * h.sigma * h.sigma));
+      if (v > z) z = v;
+    }
+    return z;
+  }));
+
+  function tokens() {
+    const cs = getComputedStyle(document.documentElement);
+    const g = n => cs.getPropertyValue(n).trim();
+    return { bg: g("--bg"), surface: g("--surface"), ink: g("--ink"), ink2: g("--ink-2"), muted: g("--muted"), hair: g("--hair"),
+      accent: g("--accent"), contour: g("--contour"), mark: g("--mark"), t: [g("--t0"), g("--t1"), g("--t2"), g("--t3"), g("--t4")],
+      body: getComputedStyle(document.body).fontFamily };
+  }
+
+  const isHill = f => f.elev !== null && f.elev > 0;
+  const ground = f => !isHill(f);
+  const symbolOf = f => f.basis === "percent only" ? "square" : f.basis === "on/off" ? "diamond" : f.basis === "not quantified" ? "circle-open" : f.basis === "none" ? "x" : "circle";
+  const labelOf = f => (f.id === state.selected || state.labels === "all" || (state.labels === "peaks" && isHill(f) && f.elev >= 1.8)) && state.labels !== "none" ? f.short : (f.id === state.selected && state.labels !== "none" ? f.short : "");
+  const custom = f => [f.feature, f.change, fmtStrength(f) + (f.band && f.band !== "On/off" ? " · " + f.band : ""), f.certainty, f.who];
+  const HOVER = "<b>%{customdata[0]}</b><br>%{customdata[1]}<br>Strength: %{customdata[2]}<br>Certainty: %{customdata[3]} · %{customdata[4]}<extra></extra>";
+
+  function traces(t) {
+    const hillF = F.filter(isHill), groundF = F.filter(ground);
+    const sel = F.find(f => f.id === state.selected);
+    const tr = [
+      { type: "surface", x: xs, y: ys, z: Z, cmin: 0, cmax: 5, showscale: false, hoverinfo: "skip",
+        colorscale: [[0, t.t[0]], [0.117, t.t[1]], [0.2, t.t[2]], [0.4, t.t[3]], [1, t.t[4]]],
+        contours: { z: { show: true, start: 0.25, end: 5, size: 0.25, color: t.contour, width: 1, highlight: false }, x: { highlight: false }, y: { highlight: false } },
+        lighting: { ambient: 0.78, diffuse: 0.55, specular: 0.04, roughness: 0.95, fresnel: 0.1 }, lightposition: { x: 1000, y: -2000, z: 4000 } },
+      { type: "scatter3d", mode: "markers+text", x: hillF.map(f => f.x), y: hillF.map(f => f.y), z: hillF.map(f => f.elev + 0.07),
+        text: hillF.map(labelOf), textposition: "top center", textfont: { color: t.ink, size: 11.5, family: t.body },
+        marker: { size: 5.5, color: t.mark, symbol: hillF.map(symbolOf), line: { color: t.surface, width: 2 } },
+        customdata: hillF.map(custom), hovertemplate: HOVER, ids: hillF.map(f => f.id) },
+      { type: "scatter3d", mode: "markers+text", x: groundF.map(f => f.x), y: groundF.map(f => f.y), z: groundF.map(() => 0.04),
+        text: groundF.map(labelOf), textposition: "top center", textfont: { color: t.ink2, size: 11, family: t.body },
+        marker: { size: 6, color: t.mark, symbol: groundF.map(symbolOf), line: { color: t.mark, width: 1.5 } },
+        customdata: groundF.map(custom), hovertemplate: HOVER, ids: groundF.map(f => f.id) }
+    ];
+    if (sel) {
+      const top = isHill(sel) ? sel.elev + 0.07 : 0.04;
+      tr.push({ type: "scatter3d", mode: "lines", x: [sel.x, sel.x], y: [sel.y, sel.y], z: [0, top + 0.35], hoverinfo: "skip",
+        line: { color: t.accent, width: 4 } });
+      tr.push({ type: "scatter3d", mode: "markers", x: [sel.x], y: [sel.y], z: [top], hoverinfo: "skip",
+        marker: { size: 12, color: "rgba(0,0,0,0)", symbol: "circle-open", line: { color: t.accent, width: 3 } } });
+    }
+    return tr;
+  }
+
+  function layout(t) {
+    const axis = (title, vals, text, range) => ({
+      title: { text: title, font: { color: t.ink2, size: 12.5, family: t.body } }, tickvals: vals, ticktext: text, range,
+      tickfont: { color: t.muted, size: 11, family: t.body }, backgroundcolor: t.surface, showbackground: true,
+      gridcolor: t.hair, zerolinecolor: t.hair, linecolor: t.hair, showspikes: false
+    });
+    return {
+      paper_bgcolor: t.surface, plot_bgcolor: t.surface, margin: { l: 0, r: 0, t: 0, b: 0 }, showlegend: false,
+      font: { family: t.body, color: t.ink }, uirevision: "keep",
+      hoverlabel: { bgcolor: t.surface, bordercolor: t.hair, font: { color: t.ink, family: t.body, size: 12.5 }, align: "left" },
+      scene: {
+        xaxis: axis("Certainty of evidence", [0, 1, 2, 3], CERT, [-0.6, 3.6]),
+        yaxis: axis("Who can do it", [0, 1, 2, 3, 4, 5], PREV, [-0.6, 5.6]),
+        zaxis: axis("Strength (SD from mean)", ZT, ZL, [0, 5.3]),
+        aspectmode: "manual", aspectratio: { x: 1.05, y: 1.45, z: 0.78 }, camera: state.camera, dragmode: state.view === "map" ? "pan" : "turntable"
+      }
+    };
+  }
+
+  const el = document.getElementById("terrain");
+  let ready = false;
+  function render() {
+    if (!window.Plotly) return;
+    const t = tokens();
+    Plotly.react(el, traces(t), layout(t), { responsive: true, displayModeBar: false, scrollZoom: true });
+    if (!ready) {
+      ready = true;
+      el.on("plotly_click", ev => { const p = ev.points && ev.points[0]; if (p && p.data && p.data.ids) select(p.data.ids[p.pointNumber]); });
+      el.on("plotly_relayout", ev => { if (ev && ev["scene.camera"]) state.camera = ev["scene.camera"]; });
+    }
+  }
+
+  // ---- details panel ----
+  function renderDetail(f) {
+    const d = document.getElementById("detail");
+    d.innerHTML =
+      '<span class="ctrl-label">Selected</span>' +
+      "<h3>" + esc(f.feature) + "</h3>" +
+      '<div><div class="big">' + esc(fmtStrength(f)) + "</div>" +
+      '<div class="sub">' + (f.band ? '<span class="band" data-band="' + esc(f.band) + '">' + esc(f.band) + "</span> · " : "") + esc(basisText(f)) + "</div></div>" +
+      '<dl class="kv">' +
+      "<dt>Change</dt><dd>" + esc(f.change) + "</dd>" +
+      "<dt>Certainty</dt><dd>" + meter(f.cert_level) + esc(f.certainty) + "</dd>" +
+      "<dt>Who</dt><dd>" + esc(f.who) + "</dd>" +
+      "<dt>Lever</dt><dd>" + esc(f.lever) + "</dd>" +
+      "<dt>Against</dt><dd>" + esc(f.baseline_text) + "</dd>" +
+      "<dt>Sources</dt><dd>" + esc(f.sources) + "</dd>" +
+      (f.note ? "<dt>Note</dt><dd>" + esc(f.note) + "</dd>" : "") +
+      "</dl>";
+  }
+
+  function select(id) {
+    const f = F.find(x => x.id === id);
+    if (!f) return;
+    state.selected = id;
+    renderDetail(f);
+    document.querySelectorAll("#rows tr[data-id]").forEach(r => r.classList.toggle("sel", r.dataset.id === id));
+    render();
+  }
+
+  // ---- ranked table (table view of every value) ----
+  const rank = f => (f.basis === "on/off" ? 1 : f.basis === "not quantified" ? 2 : 0);
+  const sorted = F.slice().sort((a, b) => rank(a) - rank(b) || (b.plot_sd ?? -1) - (a.plot_sd ?? -1));
+  const tbody = document.getElementById("rows");
+  let n = 0, lastGroup = -1;
+  const groupName = ["", "On/off — a silent muscle switches on; no SD to measure against", "Control shown, size not reported"];
+  sorted.forEach(f => {
+    const g = rank(f);
+    if (g !== lastGroup && g > 0) { tbody.insertAdjacentHTML("beforeend", '<tr class="group"><td colspan="7">' + groupName[g] + "</td></tr>"); }
+    lastGroup = g;
+    const num = g === 0 ? ++n : "—";
+    tbody.insertAdjacentHTML("beforeend",
+      '<tr data-id="' + f.id + '"><td class="num">' + num + "</td>" +
+      '<td><button type="button" class="rowbtn" data-id="' + f.id + '">' + esc(f.feature) + '</button><span class="src">' + esc(f.sources) + "</span></td>" +
+      "<td>" + esc(f.change) + "</td>" +
+      '<td class="num">' + esc(fmtStrength(f)) + "</td>" +
+      "<td>" + (f.band ? '<span class="band" data-band="' + esc(f.band) + '">' + esc(f.band) + "</span>" : "—") + "</td>" +
+      "<td>" + meter(f.cert_level) + esc(f.certainty) + "</td>" +
+      "<td>" + esc(f.who) + "</td></tr>");
+  });
+  tbody.addEventListener("click", e => { const b = e.target.closest(".rowbtn"); if (b) { select(b.dataset.id); el.scrollIntoView({ behavior: "smooth", block: "center" }); } });
+
+  const bl = document.getElementById("baselines");
+  const BL_NAMES = { rhr: "Resting heart rate", sbp: "Systolic blood pressure", axil: "Armpit (core) temperature", asym: "Left–right hand temperature difference", fing: "Finger skin temperature", pup: "Pupil diameter, normal light", hear: "Hearing threshold at 250 Hz" };
+  Object.entries(DATA.baselines).forEach(([k, b]) => {
+    bl.insertAdjacentHTML("beforeend", "<li><b>" + BL_NAMES[k] + "</b>: " + (b.mean !== null ? b.mean + " ± " : "SD ") + b.sd + " " + esc(b.unit) + " — " + esc(b.src) + "</li>");
+  });
+
+  // ---- controls ----
+  const press = (ids, on) => ids.forEach(id => document.getElementById(id).setAttribute("aria-pressed", String(id === on)));
+  document.getElementById("view-3d").onclick = () => { state.view = "3d"; state.camera = JSON.parse(JSON.stringify(CAM_3D)); press(["view-3d", "view-map"], "view-3d"); render(); };
+  document.getElementById("view-map").onclick = () => { state.view = "map"; state.camera = JSON.parse(JSON.stringify(CAM_MAP)); press(["view-3d", "view-map"], "view-map"); render(); };
+  ["peaks", "all", "none"].forEach(k => {
+    document.getElementById("lab-" + k).onclick = () => { state.labels = k; press(["lab-peaks", "lab-all", "lab-none"], "lab-" + k); render(); };
+  });
+  document.getElementById("reset").onclick = () => { state.camera = JSON.parse(JSON.stringify(state.view === "map" ? CAM_MAP : CAM_3D)); render(); };
+
+  // ---- theme changes re-render with the new tokens ----
+  try { window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render); } catch (e) {}
+  new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme", "class"] });
+
+  const first = sorted[0];
+  state.selected = first.id;
+  renderDetail(first);
+  document.querySelector('#rows tr[data-id="' + first.id + '"]').classList.add("sel");
+  if (window.Plotly) render(); else document.getElementById("fallback").hidden = false;
+})();
+</script>
