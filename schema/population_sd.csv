@@ -1,8 +1,8 @@
 ability_id,variable,mean,sd,unit,population,n,source_doi,source_citation,location,status,notes
-A01;A14,resting heart rate,65.5,7.7,bpm,adults wearable cohort,92457,10.1371/journal.pone.0227709,"Quer et al. 2020, PLoS ONE",,pilot_unverified,"Pilot value from the evidence map; re-extract with provenance before use"
-A16,systolic blood pressure,122,17,mmHg,US adults NHANES 2001-08,,,"Wright et al. 2011, NHSR 35",,pilot_unverified,"SD derived from percentiles in the pilot; re-derive and document"
-A03,axillary temperature,35.97,0.48,degC,healthy adults,,10.1093/ofid/ofz032,"Geneva et al. 2019, Open Forum Infect Dis",,pilot_unverified,
-A02,left-right hand temperature difference,0.31,0.25,degC,healthy adults,56,,"Uematsu et al. 1988, J Neurosurg",,pilot_unverified,
-A07,finger skin temperature,27.16,3.2,degC,healthy controls at 23 degC room,,,"Sci Rep 2019 thermography (identify exact paper)",,pilot_unverified,"Citation incomplete in the pilot; resolve DOI"
-A06;A08,pupil diameter photopic,4.03,0.9,mm,adults,91,,"Schroeder et al. 2018, Eur J Ophthalmol",,pilot_unverified,
-A04,hearing threshold 250 Hz,,5.0,dB,adults,126,,"Shahnaz & Ciocca 2026, Hear Res",,pilot_unverified,"Only the SD was used in the pilot"
+A01;A14,resting heart rate,65.5,7.7,bpm,adults wearable cohort,92457,10.1371/journal.pone.0227709,"Quer et al. 2020, PLoS ONE",,pilot_unverified,"Pilot value from the evidence map; document [86]: 92,457 adults, wearable, all monitored days; re-extract with provenance before use"
+A16,systolic blood pressure,122,17,mmHg,US adults NHANES 2001-08,,,"Wright et al. 2011, NHSR 35",,pilot_unverified,"SD derived from percentiles in the pilot (document [87]: 15.6 from the interquartile range 110 to 131, 17.9 from the 5th to 95th percentile span 98 to 157; adults 18+); re-derive and document; no DOI, source_url https://www.cdc.gov/nchs/data/nhsr/nhsr035.pdf"
+A03,axillary temperature,35.97,0.48,degC,healthy adults,,10.1093/ofid/ofz032,"Geneva et al. 2019, Open Forum Infect Dis",,pilot_unverified,"Document [88]: 551 measurements, 5 studies (systematic review); n left blank because the count is measurements, not persons"
+A02,left-right hand temperature difference,0.31,0.25,degC,healthy adults,56,10.3171/jns.1988.69.4.0552,"Uematsu et al. 1988, J Neurosurg",,pilot_unverified,"Document [89]: n = 56, hand dorsum"
+A07,finger skin temperature,27.16,3.2,degC,healthy controls at 23 degC room,51,10.1038/s41598-019-53598-0,"Gatt et al. 2019, Sci Rep 9:17204",,pilot_unverified,"Document [90]: 51 healthy controls, 510 finger readings; n recorded as controls (persons)"
+A06;A08,pupil diameter photopic,4.03,0.9,mm,adults,91,10.5301/ejo.5001027,"Schröder et al. 2018, Eur J Ophthalmol",,pilot_unverified,"Document [91]: 91 normal eyes (photopic, 16 lux); n is eyes, not persons"
+A04,hearing threshold 250 Hz,,5.0,dB,young adults with typical hearing,126,10.1016/j.heares.2026.109547,"Shahnaz & Ciocca 2026, Hear Res",,pilot_unverified,Only the SD was used in the pilot; document [92]: approximately 5; model estimate about 4; 126 young adults with typical hearing
