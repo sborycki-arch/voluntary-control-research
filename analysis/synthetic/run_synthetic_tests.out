@@ -1,0 +1,70 @@
+== configuration: dryrun
+  ok   run_all.R exit 0 (got 0)
+  ok   effect_sizes.csv exists
+  ok   freq_pooled.csv exists
+  ok   freq_individual.csv exists
+  ok   bayes_pooled.csv exists
+  ok   summary_of_findings.csv exists
+  ok   MANIFEST.sha256 exists
+  ok   effect_sizes.csv header
+  ok   freq_pooled.csv header
+  ok   freq_individual.csv header
+  ok   bayes_pooled.csv header
+  ok   MANIFEST does not list itself
+  ok   MANIFEST lists csv before png
+  ok   MANIFEST hashes verify (sha256sum -c)
+  ok   bayes_pooled note rows when bayesmeta absent
+  ok   dry-run: 5 individual rows (got 5)
+  ok   dry-run: 0 pooled estimates (got 0)
+  ok   dry-run: 5 freq_pooled rows all k<3 noted
+  ok   dry-run: measures SMD, SMCR x2, PLO, Z present
+  ok   dry-run: placeholder r labelled in derivation
+  ok   dry-run: SoF has 5 individual rows with GRADE empty note
+  log: analysis/synthetic/run_dryrun.log
+    Loaded 7 rows, 5 abilities from analysis/synthetic/master_dryrun.csv; 1 verified population-SD rows (of 2) from analysis/synthetic/population_sd_synthetic.csv
+    Effect sizes: 5 rows (PLO=1, SMCR=2, SMD=1, Z=1); 0 master row(s) produced none (effect_sizes_skipped.csv)
+    Frequentist: 5 ability x measure units, 0 pooled (k>=3), 0 Egger test(s); 5 individual rows
+    Bayesian: 5 ability x measure rows written (bayesmeta absent: note rows)
+    Summary of Findings: 8 rows (0 pooled, 5 individual); GRADE from analysis/synthetic/grade_final_synthetic.csv
+    Warning message:
+    Rebuilt 12 outputs (12 csv, 0 png) from analysis/synthetic/master_dryrun.csv in 3.3 s; manifest analysis/outputs/MANIFEST.sha256
+== configuration: pooling
+  ok   run_all.R exit 0 (got 0)
+  ok   effect_sizes.csv exists
+  ok   freq_pooled.csv exists
+  ok   freq_individual.csv exists
+  ok   bayes_pooled.csv exists
+  ok   summary_of_findings.csv exists
+  ok   MANIFEST.sha256 exists
+  ok   effect_sizes.csv header
+  ok   freq_pooled.csv header
+  ok   freq_individual.csv header
+  ok   bayes_pooled.csv header
+  ok   MANIFEST does not list itself
+  ok   MANIFEST lists csv before png
+  ok   MANIFEST hashes verify (sha256sum -c)
+  ok   bayes_pooled note rows when bayesmeta absent
+  ok   pooling: pooled estimate for A03
+  ok   pooling: pooled estimate for A07
+  ok   pooling: pooled estimate for A05
+  ok   pooling: pooled estimate for A21
+  ok   pooling: Egger row for A05
+  ok   pooling: funnel PNG for A05
+  ok   pooling: forest PNGs for the pooled units
+  ok   pooling: Z pooled for A03 (verified population SD)
+  ok   pooling: non-primary row reported individually, not pooled
+  ok   pooling: SE-reported row converted (derivation)
+  ok   pooling: prepost sensitivity at r=0.3 and 0.7
+  ok   pooling: sensitivity rows (fixed_effect, exclude_n_i_le_3)
+  ok   pooling: PLO natural-scale columns filled
+  ok   pooling: SoF joined GRADE on ability_id + outcome
+  ok   pooling: LOO rows written
+  log: analysis/synthetic/run_pooling.log
+    Loaded 43 rows, 4 abilities from analysis/synthetic/master_pooling.csv; 1 verified population-SD rows (of 2) from analysis/synthetic/population_sd_synthetic.csv
+    Effect sizes: 31 rows (PLO=3, SMCR=4, SMD=18, Z=6); 0 master row(s) produced none (effect_sizes_skipped.csv)
+    Frequentist: 5 ability x measure units, 5 pooled (k>=3), 1 Egger test(s); 31 individual rows
+    Bayesian: 5 ability x measure rows written (bayesmeta absent: note rows)
+    Summary of Findings: 5 rows (5 pooled, 0 individual); GRADE from analysis/synthetic/grade_final_synthetic.csv
+    Warning message:
+    Rebuilt 18 outputs (12 csv, 6 png) from analysis/synthetic/master_pooling.csv in 5.0 s; manifest analysis/outputs/MANIFEST.sha256
+== synthetic tests: 0 failure(s)

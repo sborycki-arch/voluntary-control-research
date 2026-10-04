@@ -1,0 +1,15 @@
+system library (no analysis/renv.lock); R 4.3.3, metafor 4.4.0
+Removed 13 stale output file(s)
+== analysis/00_load.R
+Loaded 7 rows, 5 abilities from analysis/synthetic/master_dryrun.csv; 1 verified population-SD rows (of 2) from analysis/synthetic/population_sd_synthetic.csv
+== analysis/01_effect_sizes.R
+Effect sizes: 5 rows (PLO=1, SMCR=2, SMD=1, Z=1); 0 master row(s) produced none (effect_sizes_skipped.csv)
+== analysis/02_frequentist.R
+Frequentist: 5 ability x measure units, 0 pooled (k>=3), 0 Egger test(s); 5 individual rows
+== analysis/03_bayesian.R
+Bayesian: 5 ability x measure rows written (bayesmeta absent: note rows)
+== analysis/04_sof.R
+Summary of Findings: 8 rows (0 pooled, 5 individual); GRADE from analysis/synthetic/grade_final_synthetic.csv
+Warning message:
+bayesmeta not installed: bayes_pooled.csv carries note rows only (see analysis/ENVIRONMENT.md) 
+Rebuilt 12 outputs (12 csv, 0 png) from analysis/synthetic/master_dryrun.csv in 3.6 s; manifest analysis/outputs/MANIFEST.sha256
