@@ -1,6 +1,6 @@
 # Trace record → transcript
 
-One row per record in `traces/stage1.jsonl` on branch `stage1-package` (commit 6bbc8b4).
+One row per record in `traces/stage1.jsonl` on branch `stage1-package` (commit 08befba).
 
 | trace_id | role | transcript |
 |---|---|---|
@@ -8,7 +8,7 @@ One row per record in `traces/stage1.jsonl` on branch `stage1-package` (commit 6
 | `s1-reviewer-single-20261004T044206Z-3686` | reviewer single | reviewer/agent-ad1816c70d70def3b.jsonl (one agent resumed across all reviewer passes) |
 | `s1-reviewer-single-20261004T045951Z-5e7b` | reviewer single | reviewer/agent-ad1816c70d70def3b.jsonl (one agent resumed across all reviewer passes) |
 | `s1-reviewer-single-20261004T112327Z-5788` | reviewer single | reviewer/agent-ad1816c70d70def3b.jsonl (one agent resumed across all reviewer passes) |
-| `s1-head-single-20261004T115033Z-4ae4` | head single | head/main-session.jsonl |
+| `s1-head-single-20261004T115033Z-4ae4` | head single | head/ (main-session.-home-user.jsonl, main-session.jsonl) |
 | `s1-builder-A-20261004T115625Z-3745` | builder A | round2-workflow/wf_740e44a5-0b1/agent-a904d733264c99904.jsonl |
 | `s1-builder-B-20261004T115643Z-7a57` | builder B | round2-workflow/wf_740e44a5-0b1/agent-a81c8fcca5e755b61.jsonl |
 | `s1-head-single-20261004T120317Z-7a6b` | head single | not available: the original build ran in a different session |
@@ -21,4 +21,5 @@ One row per record in `traces/stage1.jsonl` on branch `stage1-package` (commit 6
 | `s1-verifier-integration-20261004T125056Z-26e4` | verifier integration | round2-workflow/wf_740e44a5-0b1/agent-a2bdd3704a623e7e2.jsonl |
 | `s1-reviewer-single-20261004T130638Z-1730` | reviewer single | reviewer/agent-ad1816c70d70def3b.jsonl (one agent resumed across all reviewer passes) |
 | `s1-reviewer-single-20261004T133935Z-80aa` | reviewer single | reviewer/agent-ad1816c70d70def3b.jsonl (one agent resumed across all reviewer passes) |
-| `s1-head-single-20261004T135415Z-6172` | head single | head/main-session.jsonl |
+| `s1-head-single-20261004T135415Z-6172` | head single | head/ (main-session.-home-user.jsonl, main-session.jsonl) |
+| `s1-head-single-20261004T160753Z-fd3e` | head single | head/ (main-session.-home-user.jsonl, main-session.jsonl) |

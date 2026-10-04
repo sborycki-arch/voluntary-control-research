@@ -1,10 +1,10 @@
 # Platform transcripts — Stage 1, session of 2026-10-04
 
-Pushed at Sean Borycki's request on 2026-10-04 so the transcripts the charter requires for Stage 1 (trace capture, Stage 1 addition 1) outlive the session's temporary container. Copied unedited from the container's disk; snapshot taken 2026-10-04T14:06:07Z. JSONL, one event per line, with full tool output; hashes are in `MANIFEST.sha256`.
+Pushed at Sean Borycki's request on 2026-10-04 so the transcripts the charter requires for Stage 1 (trace capture, Stage 1 addition 1) outlive the session's temporary container. Copied unedited from the container's disk; snapshot taken 2026-10-04T16:09:26Z; first snapshot 2026-10-04T14:06:07Z. JSONL, one event per line, with full tool output; hashes are in `MANIFEST.sha256`.
 
 | Folder | Contents |
 |---|---|
-| `head/main-session.jsonl` | The main session (head agent and Sean's messages) up to the snapshot time. The session continues after the snapshot; later turns are not included |
+| `head/` | The main session (head agent and Sean's messages) up to the snapshot time: `main-session.-home-user.jsonl`, `main-session.jsonl` (the session writes one file per working directory it has used). Includes the two exchanges Sean marked "inquiry, not for record"; he approved pushing them on 4 October |
 | `reviewer/` | The independent reviewer: one agent resumed across passes 1 to 5, including the pass-3 run stopped by a rate limit |
 | `round2-workflow/wf_740e44a5-0b1/` | The round-2 fix workflow: four fixers and five verifiers (`*.meta.json` names each one), `journal.jsonl` (each agent's returned result) and `workflow_script.js` (the orchestration script) |
 
