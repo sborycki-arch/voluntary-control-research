@@ -70,6 +70,13 @@ Register ids refer to scratchpad/pm/issues_register.csv. Each row below is a dec
 | D | Decoys 8–10 (Goebel 2002, Albring 2012, Kirchhof 2018) are immune-conditioning records (not A09 endotoxin studies, screened from record text only); keep them, given the plan's note on safety-filter stops on immune material? | Sean |
 | D | Should the dry run also exercise the E8 route (full text unobtainable) by withholding one record's full text at `ft`? | Sean |
 
+## Added after reviewer pass 4 (2026-10-04)
+
+| Id | Decision | Owner |
+|---|---|---|
+| R-079 | Commit identity: the six round-2 commits were authored under Sean's name because the head agent configured git that way; the working copy now commits as "VCR head agent (Claude) <noreply@anthropic.com>". Rewriting the six commits would change every hash cited in the reviewer's reports and trace notes, so they are left as they are. Convention for the merged repository (author = agent identity, Sean as committer or sign-off?) before any merge or release | Sean |
+| R-007 (policy) | Platform transcripts exist for the nine round-2 fixer/verifier runs (JSONL, 6.6 MB in total, under the session's workflow directory) and can be attached with `trace_logger.py end --transcript`; the reviewer's own runs have only their hand-back text. Require platform exports where they exist and `final_report_only` otherwise, from the dry run on? Released at Gate 7 per TRACE_SPEC, so size and content (they contain full tool output) matter | Sean |
+
 ## Not decisions — carried as known limits
 
 - R-035, R-036: RAISE version and Minozzi 2020 figures stay marked unverified until the primary documents are opened.
