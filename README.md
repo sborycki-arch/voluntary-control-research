@@ -1,6 +1,6 @@
 # Voluntary-control systematic review — Stage 1 build package (round 2)
 
-Program: the stage-gated research program in the Claude Research Team Plan (Gate 0 approved by Sean on 2026-10-03; decision record in gate-packages/; Sean reported the trackers set to Approved on 2026-10-04).
+Program: the stage-gated research program in the Claude Research Team Plan (Gate 0 approved by Sean on 2026-10-03; decision record in gate-packages/; gate status is kept only in the live plan's Stage gates table, Sean's decision of 2026-10-04).
 This package is the Stage 1 ("Team and tooling", weeks 1–2) build: the four agent skills, the master schema with mandatory provenance, the analysis scaffold, the trace specification and logger, the reporting plan, the monitor specification and the dry-run protocol. Round 2 (2026-10-04) applied the builder-owned findings of the independent reviewer's register; CHANGELOG.md lists every change by register id, OPEN_DECISIONS.md lists what is left for Sean and the co-authors, and build-log/ holds the fixers' and verifiers' reports.
 
 ## Folder map
