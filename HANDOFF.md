@@ -28,7 +28,7 @@ Where the programme stands at the end of a session and what the next session doe
 ### Done on 4 October
 - Gate 0: Sean set the live tracker; the reviewer read it at revision 13 and closed its blocker (R-043).
 - The live plan became the only gate tracker; `gates/GATE_LOG.md` points to it, and the gate rule in `CLAUDE.md` reads it.
-- This private repository was created, with `main` as the default branch.
+- The repository was created, private at first, with `main` as the default branch. It has been public since 4 October 2026.
 - Stage 1 round-2 fixes: 34 findings closed by the reviewer's own checks in pass 4; 16 major findings remain, none a blocker.
 - The research document's lever claim was corrected, live and in `docs/`: seven of the ten High-certainty abilities work through a lever, not all ten.
 - New gate G1b, positive-control reproduction: the full pipeline must recover Paravlic et al. 2018's pooled estimate (0.72, 95% CI 0.42 to 1.02). It is in the live plan's tracker, Summary, roadmap and work plan, and in `docs/research-team-plan.md`.
@@ -48,6 +48,6 @@ Where the programme stands at the end of a session and what the next session doe
 - Minor builder fixes queued for the next round: R-078, R-080 to R-083 and the R-037 residual.
 
 ### Not pushed
-- Answers to the two questions Sean marked "inquiry, not for record", and the bell-curve chart that followed them.
+- The bell-curve chart that followed the two questions Sean marked "inquiry, not for record". The questions and their answers are in the transcripts on the `transcripts` branch; Sean approved pushing them on 4 October.
 - Container-only material: test copies, the R installation, virtual environments.
 - The main-session transcript after 16:09 UTC.
